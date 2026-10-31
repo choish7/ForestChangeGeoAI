@@ -1,0 +1,83 @@
+{
+  "n_train": 4943,
+  "n_test_spatial": 1084,
+  "class_counts": {
+    "no_change": 3000,
+    "harvest": 1500,
+    "gain": 800,
+    "conversion": 727
+  },
+  "T1_change": {
+    "features": "AE+S2+TERR",
+    "f1": 0.9364928909952607,
+    "precision": 0.9427480916030534,
+    "recall": 0.9303201506591338,
+    "balanced_accuracy": 0.9380353013693499,
+    "confusion[[TN,FP],[FN,TP]]": [
+      [
+        523,
+        30
+      ],
+      [
+        37,
+        494
+      ]
+    ]
+  },
+  "T2_type": {
+    "cv_macro_f1": [
+      0.7424025903367455,
+      0.06512351197918276
+    ],
+    "test_macro_f1": 0.7767389491772386,
+    "per_class_f1": {
+      "harvest": 0.88,
+      "conversion": 0.621,
+      "gain": 0.829
+    },
+    "confusion(rows=true)": {
+      "labels": [
+        "harvest",
+        "conversion",
+        "gain"
+      ],
+      "matrix": [
+        [
+          272,
+          17,
+          43
+        ],
+        [
+          14,
+          36,
+          11
+        ],
+        [
+          0,
+          2,
+          136
+        ]
+      ]
+    }
+  },
+  "T3_year": {
+    "n_labeled": 3008,
+    "label_year_distribution": {
+      "2020": 184,
+      "2021": 129,
+      "2022": 115,
+      "2023": 326,
+      "2024": 159,
+      "2025": 2095
+    },
+    "exact": 0.10671542553191489,
+    "within_1yr": 0.26396276595744683,
+    "peak_before_update_0to2yr": 0.5621675531914894,
+    "peak_before_update_any": 0.9168882978723404,
+    "note": "라벨=2025 임상도 갱신년도(도면 갱신시점) → 실제 발생연도보다 늦을 수 있음"
+  },
+  "scan_threshold": {
+    "cos_dist": 0.06652826070785522,
+    "train_f1_at_thr": 0.8185934198611531
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "roi_source": "local_geojson(chuncheon_boundary.geojson, LSMD 읍면동 경계 병합)",
+  "roi_area_km2": 1115.2282782576094,
+  "params": {
+    "years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "season_start_month": 4,
+    "season_end_exclusive_month": 11,
+    "max_cloud_pct": 70,
+    "export_crs": "EPSG:32652",
+    "export_scale": 20,
+    "drive_folder": "GEE_Export",
+    "file_prefix": "Chuncheon_S2"
+  },
+  "per_year": [
+    {
+      "year": 2019,
+      "scenes": 101,
+      "ndvi_mean": 0.6892088201902796,
+      "valid_ratio": 1.010894276797944
+    },
+    {
+      "year": 2020,
+      "scenes": 102,
+      "ndvi_mean": 0.678094069118956,
+      "valid_ratio": 1.010894276797944
+    },
+    {
+      "year": 2021,
+      "scenes": 97,
+      "ndvi_mean": 0.7156021663782619,
+      "valid_ratio": 1.010894276797944
+    },
+    {
+      "year": 2022,
+      "scenes": 91,
+      "ndvi_mean": 0.6639769531197647,
+      "valid_ratio": 1.010894276797944
+    },
+    {
+      "year": 2023,
+      "scenes": 77,
+      "ndvi_mean": 0.6655861944580792,
+      "valid_ratio": 1.010894276797944
+    },
+    {
+      "year": 2024,
+      "scenes": 87,
+      "ndvi_mean": 0.7461051536124628,
+      "valid_ratio": 1.010894276797944
+    },
+    {
+      "year": 2025,
+      "scenes": 97,
+      "ndvi_mean": 0.7008686617016611,
+      "valid_ratio": 1.010894276797944
+    }
+  ],
+  "bands": [
+    "NDVI_2019",
+    "NDWI_2019",
+    "NDBI_2019",
+    "NDMI_2019",
+    "Slope_2019",
+    "Elevation_2019",
+    "NDVI_2020",
+    "NDWI_2020",
+    "NDBI_2020",
+    "NDMI_2020",
+    "Slope_2020",
+    "Elevation_2020",
+    "NDVI_2021",
+    "NDWI_2021",
+    "NDBI_2021",
+    "NDMI_2021",
+    "Slope_2021",
+    "Elevation_2021",
+    "NDVI_2022",
+    "NDWI_2022",
+    "NDBI_2022",
+    "NDMI_2022",
+    "Slope_2022",
+    "Elevation_2022",
+    "NDVI_2023",
+    "NDWI_2023",
+    "NDBI_2023",
+    "NDMI_2023",
+    "Slope_2023",
+    "Elevation_2023",
+    "NDVI_2024",
+    "NDWI_2024",
+    "NDBI_2024",
+    "NDMI_2024",
+    "Slope_2024",
+    "Elevation_2024",
+    "NDVI_2025",
+    "NDWI_2025",
+    "NDBI_2025",
+    "NDMI_2025",
+    "Slope_2025",
+    "Elevation_2025"
+  ]
+}

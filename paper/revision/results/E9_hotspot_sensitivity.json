@@ -1,0 +1,47 @@
+[
+ {
+  "격자_m": 250,
+  "거리대역_m": 750,
+  "n_cells": 6380,
+  "n_hot": 556,
+  "n_cold": 0,
+  "hot_changed_ha": 389.8,
+  "total_changed_ha": 500.1
+ },
+ {
+  "격자_m": 500,
+  "거리대역_m": 1000,
+  "n_cells": 1935,
+  "n_hot": 131,
+  "n_cold": 0,
+  "hot_changed_ha": 328.6,
+  "total_changed_ha": 500.1
+ },
+ {
+  "격자_m": 500,
+  "거리대역_m": 1500,
+  "n_cells": 1935,
+  "n_hot": 166,
+  "n_cold": 0,
+  "hot_changed_ha": 267.7,
+  "total_changed_ha": 500.1
+ },
+ {
+  "격자_m": 500,
+  "거리대역_m": 2000,
+  "n_cells": 1935,
+  "n_hot": 203,
+  "n_cold": 0,
+  "hot_changed_ha": 260.3,
+  "total_changed_ha": 500.1
+ },
+ {
+  "격자_m": 1000,
+  "거리대역_m": 3000,
+  "n_cells": 638,
+  "n_hot": 43,
+  "n_cold": 0,
+  "hot_changed_ha": 174.8,
+  "total_changed_ha": 500.1
+ }
+]

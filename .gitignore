@@ -1,0 +1,24 @@
+# secrets
+claude_key.txt
+*.env
+.env
+
+# raw / restricted data (see docs/DATA.md)
+data/
+output/
+*임상도*/
+*경영계획부*
+*임소반*
+LSMD_*/
+forest-change-agent/work/change_polygons.parquet
+forest-change-agent/work/regions.parquet
+paper/revision/inje/inje_change_polygons.parquet
+paper/revision/inje/inje_events.parquet
+paper/revision/inje/payload_*.txt
+
+# run artefacts
+forest_decision_agent/outputs/
+forest-change-agent/outputs/cards/
+__pycache__/
+*.pyc
+*.tif.aux.xml

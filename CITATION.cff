@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this code or data, please cite the article below."
+title: "ForestChangeGeoAI: AlphaEarth satellite embeddings and natural-language GeoAI for traceable forest change monitoring"
+authors:
+  - family-names: Choi
+    given-names: Sin-Hyung
+    affiliation: "University of Seoul; Korea Forest Service"
+  - family-names: Jung
+    given-names: Hyung-Sup
+    affiliation: "University of Seoul"
+repository-code: "https://github.com/choish7/ForestChangeGeoAI"
+preferred-citation:
+  type: article
+  title: "Integrating AlphaEarth Satellite Embeddings and Natural Language GeoAI for Traceable Forest Change Monitoring in South Korea"
+  authors:
+    - family-names: Choi
+      given-names: Sin-Hyung
+    - family-names: Jung
+      given-names: Hyung-Sup
+  journal: "Remote Sensing"
+  status: submitted

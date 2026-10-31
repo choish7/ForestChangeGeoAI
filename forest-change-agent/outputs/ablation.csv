@@ -1,0 +1,10 @@
+﻿task,features,n_feat,cv_f1_mean,cv_f1_sd,test_spatial_f1,generalization_gap
+T1_change,AE,75,0.8592,0.0932,0.9333,-0.0741
+T1_change,S2,6,0.7731,0.0362,0.7723,0.0008
+T1_change,TERR,2,0.5238,0.0683,0.5132,0.0105
+T1_change,AE+S2,81,0.866,0.0852,0.9364,-0.0704
+T1_change,AE+TERR,77,0.8662,0.0817,0.9354,-0.0692
+T1_change,S2+TERR,8,0.7849,0.0438,0.7582,0.0267
+T1_change,AE+S2+TERR,83,0.8659,0.0855,0.9365,-0.0706
+T1b_loss_forest2019,AE+S2+TERR,83,0.8377,0.1269,0.8962,-0.0585
+T1b_loss_forest2019,AE+S2+TERR+ATTR,86,0.8445,0.1178,0.9051,-0.0606

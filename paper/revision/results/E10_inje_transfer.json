@@ -1,0 +1,26 @@
+{
+ "설명": "E10 인제군(51810) 전이 시험. 춘천 학습 표본(train)으로 학습한 모델을 재학습 없이 인제 표본(2,100점: 무변화 1,000, 벌채·갱신 500, 전용 300, 산림증가 300)에 적용. 라벨·표본 규칙은 춘천과 동일(inje_prepare.py). 특징 추출·평가는 Colab(GEE ee-choish7838, 자산 projects/ee-choish7838/assets/inje_transfer)에서 수행, 2026-10-31.",
+ "T1_binary": [
+  {"features": "AE", "n_feat": 75, "chuncheon_holdout_F1": 0.933, "inje_transfer_F1": 0.778, "P": 0.955, "R": 0.656, "inje_local_CV_F1": "0.792 ± 0.119"},
+  {"features": "S2", "n_feat": 6, "chuncheon_holdout_F1": 0.764, "inje_transfer_F1": 0.755, "P": 0.828, "R": 0.694, "inje_local_CV_F1": "0.727 ± 0.062"},
+  {"features": "TERR", "n_feat": 2, "chuncheon_holdout_F1": 0.487, "inje_transfer_F1": 0.378, "P": 0.572, "R": 0.282, "inje_local_CV_F1": "0.474 ± 0.059"},
+  {"features": "AE+S2", "n_feat": 81, "chuncheon_holdout_F1": 0.936, "inje_transfer_F1": 0.823, "P": 0.960, "R": 0.721, "inje_local_CV_F1": "0.847 ± 0.082"},
+  {"features": "AE+S2+TERR", "n_feat": 83, "chuncheon_holdout_F1": 0.934, "inje_transfer_F1": 0.760, "P": 0.969, "R": 0.625, "inje_local_CV_F1": "0.843 ± 0.089"}
+ ],
+ "주의_재현": "춘천 홀드아웃 재현값: AE 0.933(논문 0.933), AE+S2+TERR 0.934(논문 0.936), S2 0.764(논문 0.772) — S2 합성영상을 GEE 에서 다시 계산해 생긴 소폭 차이",
+ "T1_transfer_AE+S2+TERR_confusion[[TN,FP],[FN,TP]]": [[978, 22], [412, 688]],
+ "T1_transfer_AE+S2+TERR_FN_by_type": {"harvest": [23, 500, 0.046], "conversion": [195, 300, 0.650], "gain": [194, 300, 0.647]},
+ "threshold_diagnostic_recall_by_type": {
+  "AE": {"0.5": [0.778, {"harvest": 0.96, "conversion": 0.317, "gain": 0.49}], "0.2": [0.825, {"harvest": 0.968, "conversion": 0.467, "gain": 0.653}], "0.1": [0.844, {"harvest": 0.976, "conversion": 0.557, "gain": 0.743}]},
+  "AE+S2": {"0.5": [0.823, {"harvest": 0.966, "conversion": 0.577, "gain": 0.457}], "0.2": [0.861, {"harvest": 0.974, "conversion": 0.677, "gain": 0.633}], "0.1": [0.866, {"harvest": 0.974, "conversion": 0.713, "gain": 0.69}]},
+  "AE+S2+TERR": {"0.5": [0.760, {"harvest": 0.954, "conversion": 0.35, "gain": 0.353}], "0.2": [0.800, {"harvest": 0.962, "conversion": 0.523, "gain": 0.387}], "0.1": [0.822, {"harvest": 0.972, "conversion": 0.607, "gain": 0.42}]}
+ },
+ "AE_cos_dist_median_by_class": {"chuncheon": {"no_change": 0.031, "harvest": 0.211, "conversion": 0.042, "gain": 0.080}, "inje": {"no_change": 0.025, "harvest": 0.206, "conversion": 0.039, "gain": 0.083}},
+ "T2_type": {"chuncheon_holdout_macroF1": 0.785, "inje_transfer_macroF1": 0.776, "inje_transfer_classF1": {"harvest": 0.856, "conversion": 0.804, "gain": 0.668}, "inje_local_CV_macroF1": "0.686 ± 0.130", "inje_transfer_confusion(rows=true: harvest, conversion, gain)": [[437, 16, 47], [10, 226, 64], [74, 20, 206]]},
+ "E10b_inje_dated_events": {
+  "설명": "인제 국유림 사업실적 2020~2024 (A 임목생산 주벌, B 조림예정지정리·인공갱신), 소반 33개 내부 156점, 소반별 평균 연속연도 AE 거리(2018~2025) 정점. lag = AE 정점 연도 − 사업 연도",
+  "all": {"n": 33, "exact": 0.091, "within1": 0.788, "lag_dist": {"-4": 1, "-1": 5, "0": 3, "1": 18, "2": 4, "3": 2}},
+  "A_final_felling": {"n": 22, "exact": 0.0, "within1": 0.818, "lag_dist": {"1": 18, "2": 2, "3": 2}},
+  "B_regeneration": {"n": 11, "exact": 0.273, "within1": 0.727, "lag_dist": {"-4": 1, "-1": 5, "0": 3, "2": 2}}
+ }
+}

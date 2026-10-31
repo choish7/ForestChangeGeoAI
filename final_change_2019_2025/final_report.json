@@ -1,0 +1,120 @@
+{
+  "period": "2019→2025",
+  "model": "AlphaEarth V1 + Sentinel-2 지수 (HistGradientBoosting)",
+  "forest_mask": "Chuncheon_forestmask_AE_10m.tif",
+  "mmu_ha": {
+    "벌채·갱신": 0.5,
+    "산지전용": 0.2,
+    "산림증가": 0.5
+  },
+  "classifier_holdout": {
+    "n_train": 136462,
+    "n_test": 651127,
+    "balanced_accuracy": 0.7201,
+    "macro_f1": 0.5853,
+    "changed_auroc": 0.9918,
+    "changed_ap": 0.8792,
+    "verified_changed_auroc": 0.9995,
+    "verified_changed_ap": 0.9934,
+    "n_test_verified": 106187,
+    "per_class": {
+      "no_change": {
+        "precision": 0.9965,
+        "recall": 0.9861,
+        "f1-score": 0.9912,
+        "support": 634718.0
+      },
+      "harvest": {
+        "precision": 0.7189,
+        "recall": 0.963,
+        "f1-score": 0.8232,
+        "support": 10507.0
+      },
+      "conversion": {
+        "precision": 0.0957,
+        "recall": 0.5479,
+        "f1-score": 0.1629,
+        "support": 522.0
+      },
+      "gain": {
+        "precision": 0.346,
+        "recall": 0.3833,
+        "f1-score": 0.3637,
+        "support": 5380.0
+      }
+    }
+  },
+  "final_map_holdout": {
+    "macro_f1": 0.6056,
+    "무변화": {
+      "precision": 0.996,
+      "recall": 0.99,
+      "f1": 0.993
+    },
+    "벌채·갱신": {
+      "precision": 0.745,
+      "recall": 0.963,
+      "f1": 0.84
+    },
+    "산지전용": {
+      "precision": 0.132,
+      "recall": 0.435,
+      "f1": 0.202
+    },
+    "산림증가": {
+      "precision": 0.411,
+      "recall": 0.366,
+      "f1": 0.387
+    }
+  },
+  "area_ha": {
+    "무변화": 81111.1,
+    "벌채·갱신": 2287.6,
+    "산지전용": 662.8,
+    "산림증가": 978.0
+  },
+  "patches": {
+    "벌채·갱신": {
+      "개수": 719,
+      "면적_ha": 2287.64,
+      "중앙값_ha": 0.95
+    },
+    "산림증가": {
+      "개수": 566,
+      "면적_ha": 977.95,
+      "중앙값_ha": 0.73
+    },
+    "산지전용": {
+      "개수": 1620,
+      "면적_ha": 662.83,
+      "중앙값_ha": 0.27
+    }
+  },
+  "change_year_area_ha": {
+    "벌채·갱신": {
+      "2020": 404.8,
+      "2021": 359.3,
+      "2022": 448.1,
+      "2023": 612.8,
+      "2024": 211.2,
+      "2025": 251.6
+    },
+    "산지전용": {
+      "2020": 48.6,
+      "2021": 54.5,
+      "2022": 180.9,
+      "2023": 294.9,
+      "2024": 45.4,
+      "2025": 38.5
+    },
+    "산림증가": {
+      "2020": 7.0,
+      "2021": 3.9,
+      "2022": 321.5,
+      "2023": 589.2,
+      "2024": 14.8,
+      "2025": 41.5
+    }
+  },
+  "elapsed_min": 58.2
+}

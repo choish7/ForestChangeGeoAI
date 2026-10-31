@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>산림변화 의사결정 지원</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+:root{--g:#2f6b3a;--g2:#e8f0e8;--bd:#d5ddd5;--tx:#1f2a1f;--mut:#667066;--bg:#fafbfa}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:var(--tx);background:var(--bg);height:100vh;display:flex;flex-direction:column;font-size:14px}
+header{background:var(--g);color:#fff;padding:8px 14px;display:flex;align-items:center;gap:12px}
+header h1{font-size:16px;margin:0;font-weight:600}
+header .st{font-size:12px;opacity:.9;margin-left:auto}
+main{flex:1;display:flex;min-height:0}
+#side{width:370px;min-width:320px;display:flex;flex-direction:column;border-right:1px solid var(--bd);background:#fff}
+#tabs{display:flex;border-bottom:1px solid var(--bd)}
+#tabs button{flex:1;border:0;background:none;padding:9px 2px;cursor:pointer;font:inherit;color:var(--mut);border-bottom:2px solid transparent}
+#tabs button.on{color:var(--g);border-bottom-color:var(--g);font-weight:600}
+.pane{display:none;padding:12px;overflow:auto;flex:1}
+.pane.on{display:block}
+#map{flex:1;min-width:300px}
+#right{width:520px;min-width:360px;display:flex;flex-direction:column;border-left:1px solid var(--bd);background:#fff}
+#right .hd{padding:8px 12px;border-bottom:1px solid var(--bd);display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+#right .hd b{margin-right:auto;color:var(--g);font-size:13px}
+#rep{flex:1;width:100%;border:0}
+#right .empty{padding:24px;color:var(--mut)}
+textarea,input,select{font:inherit;width:100%;padding:6px 8px;border:1px solid var(--bd);border-radius:4px}
+textarea{height:110px;resize:vertical}
+button.b{background:var(--g);color:#fff;border:0;border-radius:4px;padding:6px 12px;cursor:pointer;font:inherit}
+button.b2{background:#fff;color:var(--g);border:1px solid var(--g);border-radius:4px;padding:4px 9px;cursor:pointer;font:inherit;font-size:13px}
+button:disabled{opacity:.45;cursor:default}
+.row{display:flex;gap:6px;align-items:center;margin:6px 0;flex-wrap:wrap}
+.chip{display:inline-block;background:var(--g2);border-radius:12px;padding:2px 9px;margin:2px;font-size:12px;cursor:pointer}
+.area{background:#fff8e6;border:1px solid #f0d58a;border-radius:4px;padding:6px 8px;font-size:13px}
+.log{background:#1e241e;color:#cfe3cf;font:12px Consolas,monospace;padding:8px;border-radius:4px;max-height:260px;overflow:auto;white-space:pre-wrap;margin-top:8px}
+h3{font-size:14px;margin:12px 0 6px;color:var(--g)}
+table{border-collapse:collapse;width:100%;font-size:12px}
+td,th{border:1px solid var(--bd);padding:3px 5px;text-align:left;vertical-align:top}
+th{background:var(--g2)}
+.kv td:first-child{color:var(--mut);width:42%;white-space:nowrap}
+.res{padding:6px;border-bottom:1px solid #eee;cursor:pointer}.res:hover{background:var(--g2)}
+.res small{color:var(--mut)}
+.muted{color:var(--mut);font-size:12px}
+.legend{background:#fff;padding:6px 8px;border-radius:4px;box-shadow:0 1px 4px rgba(0,0,0,.3);font-size:12px;line-height:1.5}
+.legend i{display:inline-block;width:12px;height:12px;margin-right:5px;vertical-align:-2px;border:1px solid #555}
+.hlnum{background:#ff3b1f;color:#fff;border:2px solid #fff;border-radius:50%;width:26px;height:26px;line-height:22px;text-align:center;
+  font-weight:700;font-size:13px;animation:pulse 1.6s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,59,31,.75)}70%{box-shadow:0 0 0 13px rgba(255,59,31,0)}100%{box-shadow:0 0 0 0 rgba(255,59,31,0)}}
+.hllist{background:#fff;border-radius:6px;box-shadow:0 1px 6px rgba(0,0,0,.35);max-height:320px;overflow:auto;font-size:12px;width:250px}
+.hllist .t{background:#ff3b1f;color:#fff;padding:5px 8px;font-weight:600;display:flex;gap:6px;align-items:center;position:sticky;top:0}
+.hllist .t button{margin-left:auto;border:0;background:#fff;color:#c00;border-radius:3px;cursor:pointer;font-size:11px}
+.hllist .i{padding:3px 8px;border-bottom:1px solid #eee;cursor:pointer}.hllist .i:hover{background:#ffeceb}
+.hllist .i b{display:inline-block;width:20px;color:#c00}
+.hllist small{color:#666}
+</style>
+</head>
+<body>
+<header><h1 data-i="title">🌲 산림변화 의사결정 지원 — 춘천시 2019→2025</h1>
+  <select id="langSel" title="Language" style="width:auto;margin-left:12px;padding:2px 6px;font-size:12px"><option value="ko">한국어</option><option value="en">English</option></select>
+  <span class="st" id="status"></span></header>
+<main>
+<section id="side">
+  <div id="tabs">
+    <button data-p="q" class="on" data-i="tab_q">질의</button><button data-p="s" data-i="tab_s">장소</button><button data-p="a" data-i="tab_a">속성</button>
+    <button data-p="r" data-i="tab_r">지역</button><button data-p="h" data-i="tab_h">보고서</button>
+  </div>
+
+  <div class="pane on" id="p-q">
+    <div class="area"><span data-i="area">대상 지역</span>: <b id="areaLbl"></b>
+      <div class="row">
+        <select id="emdSel" style="width:auto;flex:1"><option value="" data-i="emd_pick">읍면동 선택…</option></select>
+        <button class="b2" id="bboxBtn" data-i="bbox">지도 범위</button>
+        <button class="b2" id="selBtn" data-i="sel">선택 소반</button>
+        <button class="b2" id="clrBtn" data-i="all">전체</button>
+      </div>
+      <div class="muted" data-i="shift">소반을 Shift+클릭하면 여러 개를 선택합니다.</div>
+    </div>
+    <h3 data-i="query">질의</h3>
+    <textarea id="qText" data-ip="q_ph"></textarea>
+    <div id="examples"></div>
+    <div class="row">
+      <select id="mode" style="width:auto"><option value="auto" data-i="m_auto">자동</option><option value="llm" data-i="m_llm">Claude 에이전트</option><option value="rule" data-i="m_rule">규칙 기반</option></select>
+      <button class="b" id="runBtn" data-i="run">질의 실행</button>
+      <span class="muted" id="modeNote"></span>
+    </div>
+    <div class="log" id="log" hidden></div>
+  </div>
+
+  <div class="pane" id="p-s">
+    <input id="sq" data-ip="s_ph">
+    <div class="muted" style="margin:4px 0" data-i="s_help">결과를 누르면 지도로 이동하고 속성을 엽니다.</div>
+    <div id="sres"></div>
+  </div>
+
+  <div class="pane" id="p-a"><div id="attr" class="muted" data-i="a_help">지도에서 소반·산지전용 필지·재해 지점을 누르세요.</div></div>
+
+  <div class="pane" id="p-r">
+    <div class="muted" data-i="r_help">질의 탭에서 지정한 대상 지역의 요약입니다 (LLM 없이 즉시 계산).</div>
+    <div class="row"><button class="b2" id="sumBtn" data-i="sum">지역 요약 보기</button><button class="b" id="sumSave" data-i="sum_save">이 지역 보고서 저장</button></div>
+    <div id="sum"></div>
+  </div>
+
+  <div class="pane" id="p-h"><div class="row"><button class="b2" id="runsBtn" data-i="refresh">새로고침</button></div><div id="runs"></div></div>
+</section>
+
+<div id="map"></div>
+
+<section id="right">
+  <div class="hd"><b id="repTitle" data-i="report">분석 보고서</b>
+    <button class="b2" id="showMap" disabled data-i="show_map">지도에 표시</button><button class="b2" id="dlMd" disabled>MD</button>
+    <button class="b2" id="dlHtml" disabled>HTML</button><button class="b2" id="printBtn" disabled data-i="print">인쇄·PDF</button></div>
+  <div class="empty" id="repEmpty" data-i="rep_empty">질의를 실행하거나 '보고서' 탭에서 저장된 보고서를 고르면 여기에 표시됩니다.</div>
+  <iframe id="rep" hidden></iframe>
+</section>
+</main>
+
+<script>
+// ===================== 언어 (한국어 / English) =====================
+const TXT = {
+ ko: {title: '🌲 산림변화 의사결정 지원 — 춘천시 2019→2025', tab_q: '질의', tab_s: '장소', tab_a: '속성', tab_r: '지역', tab_h: '보고서', area: '대상 지역',
+      emd_pick: '읍면동 선택…', bbox: '지도 범위', sel: '선택 소반', all: '전체', shift: '소반을 Shift+클릭하면 여러 개를 선택합니다.', query: '질의',
+      q_ph: '예: 사업실적이 없으나 변화가 집중된 소반은 어디인가?', m_auto: '자동', m_llm: 'Claude 에이전트', m_rule: '규칙 기반', run: '질의 실행',
+      s_ph: '읍면동·리·지번·소반ID(예 060-000)·고시번호', s_help: '결과를 누르면 지도로 이동하고 속성을 엽니다.', a_help: '지도에서 소반·산지전용 필지·재해 지점을 누르세요.',
+      r_help: '질의 탭에서 지정한 대상 지역의 요약입니다 (LLM 없이 즉시 계산).', sum: '지역 요약 보기', sum_save: '이 지역 보고서 저장', refresh: '새로고침',
+      report: '분석 보고서', show_map: '지도에 표시', print: '인쇄·PDF', rep_empty: "질의를 실행하거나 '보고서' 탭에서 저장된 보고서를 고르면 여기에 표시됩니다.",
+      city: '춘천시 전체', cur_bbox: '현재 지도 범위', sel_n: n => `선택 소반 ${n}개`, sel_btn: n => n ? `선택 소반 (${n})` : '선택 소반', unit: id => `소반 ${id}`,
+      need_sel: '소반을 Shift+클릭으로 먼저 선택하세요.', loading: '불러오는 중…', llm_on: m => `Claude 연결됨 (${m})`, llm_off: 'LLM 미연결 — 규칙 기반 분석',
+      models: (a, b) => ` · 변화모델: 최종지도(AE+S2) F1 ${a}, Mini-GFM(S2) F1 ${b}`, no_key: 'API 키가 없어 규칙 기반으로 실행됩니다.', rule_ko: '',
+      err: '오류: ', none: '없음', attr_of: l => `${l} 속성`, b_ts: '시계열·모델 근거', b_ex: '변화 해석', b_sim: '유사 소반', b_area: '대상 지역으로 선택', b_ask: '이 소반 질의',
+      ask_q: id => `소반 ${id}의 위성 변화와 사업실적·재해 이력을 대조하고 점검이 필요한지 정리해줘`, explaining: '근거 정리 중…', ex_t: '변화 해석', repeat: ' · 반복 교란',
+      obs: '관측', rec: '기록', interp: '해석', chk: '추가 확인', unc: '불확실성', yr: '연도', sim_wait: '유사 소반 검색 중…', sim_t: '임베딩이 비슷한 소반 (비교·검증 후보)',
+      sim_note: '관측된 지표 특성의 유사성이며 기후·토양·생태 기능이 같다는 뜻은 아닙니다.', ts_wait: '원자료 읽는 중…', ts_ae: '■ AE 연속연도 거리',
+      ae_peak: 'AE 최대 변화 구간', fm_px: '최종지도 화소', fm_yr: '최종지도 변화연도', fm_p: '최종지도 평균확률', mg_px: 'Mini-GFM 화소', mg_p: 'Mini-GFM 평균확률',
+      no_res: '결과 없음', computing: '계산 중…', nf: '국유림 소반 / 면적', ae_ha: 'AlphaEarth 변화면적', s2_ha: 'Sentinel-2 변화면적', dis: '재해 2019~2025',
+      ae_yr: 'AE 변화연도별 소반', by_j: '판정별', recs: '사업실적 2019~2025', conv: '산지전용 고시 필지', rank: '점검 우선순위', save_q: a => `${a} 산림변화 현황과 점검 우선순위, 산지전용 필지 정리`,
+      no_runs: '저장된 보고서가 없습니다.', res_n: n => `결과 표시 ${n}곳`, clear: '해제', rep_units: '보고서에 나온 소반',
+      lg_j: '소반 판정', lg_p: '산지전용 필지', lg_fire: '산불', lg_slide: '산사태', lg_m: '모델 변화 패치', lg_hl: '결과 강조',
+      ly_base: '일반지도', ly_sat: '위성영상', ly_emd: '읍면동 경계', ly_su: '국유림 소반(판정)', ly_pc: '산지전용 고시 필지', ly_dz: '산불·산사태(2019~2025)', ly_m: '모델 변화 패치(AE+S2 최종지도)',
+      patch: (c, a, y, p) => `모델 변화 패치 · ${c}<br>${a} ha · ${y}년 · 확률 ${p}`},
+ en: {title: '🌲 Forest Change Decision Support — Chuncheon 2019→2025', tab_q: 'Query', tab_s: 'Places', tab_a: 'Attributes', tab_r: 'Area', tab_h: 'Reports', area: 'Target area',
+      emd_pick: 'Select eup/myeon/dong…', bbox: 'Map extent', sel: 'Selected stands', all: 'All', shift: 'Shift+click stands to select several.', query: 'Query',
+      q_ph: 'e.g. Where are stands with concentrated change but no management records?', m_auto: 'Auto', m_llm: 'Claude agent', m_rule: 'Rule-based', run: 'Run query',
+      s_ph: 'Eup/myeon/dong, ri, lot no., stand ID (e.g. 060-000), notice no.', s_help: 'Click a result to zoom to it and open its attributes.', a_help: 'Click a stand, conversion parcel or disaster point on the map.',
+      r_help: 'Summary of the target area set in the Query tab (computed instantly, no LLM).', sum: 'Show area summary', sum_save: 'Save report for this area', refresh: 'Refresh',
+      report: 'Analysis report', show_map: 'Show on map', print: 'Print / PDF', rep_empty: 'Run a query or pick a saved report in the Reports tab to show it here.',
+      city: 'All of Chuncheon', cur_bbox: 'Current map extent', sel_n: n => `${n} selected stands`, sel_btn: n => n ? `Selected stands (${n})` : 'Selected stands', unit: id => `Stand ${id}`,
+      need_sel: 'Shift+click stands first.', loading: 'Loading…', llm_on: m => `Claude connected (${m})`, llm_off: 'No LLM — rule-based analysis',
+      models: (a, b) => ` · change models: final map (AE+S2) F1 ${a}, Mini-GFM (S2) F1 ${b}`, no_key: 'No API key: runs in rule-based mode.', rule_ko: '',
+      err: 'Error: ', none: 'None', attr_of: l => `${l} attributes`, b_ts: 'Time series & model evidence', b_ex: 'Explain change', b_sim: 'Similar stands', b_area: 'Use as target area', b_ask: 'Ask about this stand',
+      ask_q: id => `For stand ${id}, compare satellite change with management and disaster records and tell me whether a field inspection is needed.`, explaining: 'Gathering evidence…', ex_t: 'Change explanation', repeat: ' · repeated disturbance',
+      obs: 'Observation', rec: 'Records', interp: 'Interpretation', chk: 'Check further', unc: 'Uncertainty', yr: 'Year', sim_wait: 'Searching similar stands…', sim_t: 'Stands with similar embeddings (candidates for comparison)',
+      sim_note: 'Similarity of observed surface characteristics; it does not mean the same climate, soil or ecological function.', ts_wait: 'Reading source data…', ts_ae: '■ AE year-to-year distance',
+      ae_peak: 'AE peak change interval', fm_px: 'Final-map pixels', fm_yr: 'Final-map change year', fm_p: 'Final-map mean probability', mg_px: 'Mini-GFM pixels', mg_p: 'Mini-GFM mean probability',
+      no_res: 'No results', computing: 'Computing…', nf: 'National-forest stands / area', ae_ha: 'AlphaEarth change area', s2_ha: 'Sentinel-2 change area', dis: 'Disasters 2019–2025',
+      ae_yr: 'Stands by AE change year', by_j: 'By judgement', recs: 'Management records 2019–2025', conv: 'Forest conversion notice parcels', rank: 'Inspection priority', save_q: a => `${a} 산림변화 현황과 점검 우선순위, 산지전용 필지 정리`,
+      no_runs: 'No saved reports.', res_n: n => `${n} results shown`, clear: 'Clear', rep_units: 'Stands in report',
+      lg_j: 'Stand judgement', lg_p: 'Conversion parcels', lg_fire: 'Wildfire', lg_slide: 'Landslide', lg_m: 'Model change patches', lg_hl: 'Highlighted result',
+      ly_base: 'Street map', ly_sat: 'Satellite imagery', ly_emd: 'Eup/myeon/dong boundaries', ly_su: 'National-forest stands (judgement)', ly_pc: 'Conversion notice parcels', ly_dz: 'Wildfires & landslides (2019–2025)', ly_m: 'Model change patches (AE+S2 final map)',
+      patch: (c, a, y, p) => `Model change patch · ${c}<br>${a} ha · ${y} · probability ${p}`}};
+// 데이터 값(판정·클래스·경로 등)과 속성 이름의 영문 표기 — 없으면 원문 그대로
+const VAL_EN = {'미기록 변화(점검 필요)': 'Unrecorded change (inspect)', '기타실적·변화관측(확인)': 'Other records + change (check)', '기록일치(수확실적·변화관측)': 'Records match (harvest + change)',
+  '실적있으나 변화 미관측(이행 확인)': 'Records but no change (verify)', '안정': 'Stable', '전용확정': 'Confirmed conversion', '전용후보': 'Conversion candidate', '전용이전': 'Pre-2019 conversion',
+  '벌채·갱신': 'Harvest/regeneration', '산지전용': 'Forest conversion', '산림증가': 'Forest gain', '무변화': 'No change', '산불': 'Wildfire', '산사태': 'Landslide',
+  '침엽수림': 'Coniferous', '활엽수림': 'Broadleaf', '혼효림': 'Mixed', '무립목지': 'Unstocked', '산림': 'Forest', '나지': 'Bare (unstocked)', '초지': 'Grass/shrub', '시설지': 'Non-forest use',
+  '교란 후 회복': 'Recovery after disturbance', '교란 후 회복 지연': 'Delayed recovery', '지속 손실·전환 의심': 'Persistent loss / conversion suspected', '최근 교란(회복 판단 이름)': 'Recent disturbance (too early to judge)',
+  '수분 스트레스 등 식생 이상 의심': 'Possible vegetation stress', '식생 증가·성장 (변화 신호 동반)': 'Vegetation gain (with change signal)', '임베딩 변화·지수 안정': 'Embedding change, indices stable',
+  '식생 증가·성장 추정': 'Vegetation growth (likely)', '수확·갱신': 'Harvest/regeneration', '솎아베기': 'Thinning', '피해·기타': 'Damage/other', '실적없음': 'No records',
+  '조림': 'Plantation', '숲가꾸기': 'Tending', '임목생산': 'Timber production', '시설': 'Facilities', '소득': 'Income', '병해충방제및산림피해복구': 'Pest control & restoration',
+  '소반': 'Stand', '읍면동': 'Eup/myeon/dong', '산지전용필지': 'Conversion parcel', '재해': 'Disaster'};
+const FIELD_EN = {'단위ID': 'Stand ID', '임반': 'Compartment', '소반': 'Stand', '읍면동': 'Eup/myeon/dong', '소재지': 'Address', '면적_ha': 'Area (ha)', '판정': 'Judgement',
+  '실적구분_2020_2025': 'Records 2020–2025', '실적연도': 'Record years', '실적종별': 'Record sub-types', '실적건수': 'Record count', '합의라벨': 'Consensus label', '임상도_변화비율': 'Forest-map change ratio',
+  'AE_변화비율': 'AE change ratio', 'AE_변화면적_ha': 'AE change area (ha)', 'AE_변화연도': 'AE change year', 'S2_변화비율': 'S2 change ratio', 'S2_변화면적_ha': 'S2 change area (ha)', 'S2_dNDVI': 'S2 ΔNDVI',
+  '경사_도': 'Slope (°)', '표고_m': 'Elevation (m)', '산불_500m_2019_2025': 'Wildfires within 500 m', '산사태_500m_2019_2025': 'Landslides within 500 m', '임도거리_m': 'Forest road distance (m)', '도로거리_m': 'Road distance (m)',
+  'FM_변화면적_ha': 'Final-map change (ha)', 'FM_주변화유형': 'Final-map main change', 'FM_변화연도': 'Final-map change year', 'FM_변화확률': 'Final-map change prob.', 'MG_변화면적_ha': 'Mini-GFM change (ha)',
+  '신호일치수': 'Signal agreement (0–3)', '레코드ID': 'Record ID', '고시번호': 'Notice no.', '고시연도': 'Notice year', '주소': 'Address', '지목': 'Land category', '전용용도': 'Converted use', '해제면적_m2': 'Released area (m²)',
+  '라벨': 'Label', '유형': 'Type', '연도': 'Year', '사업구분': 'Project type', '종별': 'Sub-type', '사업비_천원': 'Cost (k KRW)', '소반거리_m': 'Distance to stand (m)', '구분': 'Item',
+  '조사연도': 'Survey years', '마지막조사_최근': 'Latest survey', '변화구간': 'Change intervals', '재조사_우선': 'Re-survey reason', 'AE연도별_우세임상': 'AE yearly dominant type',
+  '침엽수림_비율': 'Coniferous share', '활엽수림_비율': 'Broadleaf share', '혼효림_비율': 'Mixed share', '무립목지_비율': 'Unstocked share', '우세': 'Dominant', '유사도': 'Similarity', '변화경로': 'Change path',
+  '수종': 'Species', '경사차': 'Slope diff.', '표고차': 'Elevation diff.', '점수': 'Score', '안정성': 'Stability', 'AE변화ha': 'AE change (ha)', '필지': 'Parcels', '건수': 'Count', '소반수': 'Stands',
+  '사업실적_2019_2025': 'Management records 2019–2025', '가까운_재해': 'Nearby disasters', 'AlphaEarth_분류모델': 'AlphaEarth classifiers', '임상도_조사이력': 'Forest-map survey history',
+  'AE_연도별_임상추정(2017~2025)': 'AE yearly forest type (2017–2025)', '주변_산지전용_필지(1 km)': 'Conversion parcels within 1 km', 'AE 거리': 'AE distance'};
+let LANG = 'ko';
+try { LANG = new URLSearchParams(location.search).get('lang') || localStorage.getItem('fdLang') || 'ko'; } catch (e) {}
+if (!TXT[LANG]) LANG = 'ko';
+const t = k => TXT[LANG][k] ?? TXT.ko[k];
+const tv = v => (LANG === 'en' && typeof v === 'string' && VAL_EN[v]) ? VAL_EN[v] : v;
+const tf = k => (LANG === 'en' && FIELD_EN[k]) ? FIELD_EN[k] : k;
+function applyLang() {
+  document.documentElement.lang = LANG;
+  document.querySelectorAll('[data-i]').forEach(el => el.textContent = t(el.dataset.i));
+  document.querySelectorAll('[data-ip]').forEach(el => el.placeholder = t(el.dataset.ip));
+  $('#langSel').value = LANG;
+}
+const $ = s => document.querySelector(s);
+const esc = v => (v === null || v === undefined) ? '' : String(v).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt = v => typeof v === 'number' ? (Number.isInteger(v) ? v.toLocaleString() : (+v.toFixed(3)).toLocaleString()) : esc(tv(v));
+const api = async (u, o) => { const r = await fetch(u, o); if (!r.ok) throw new Error((await r.text()) || r.status); return r.json(); };
+const post = (u, b) => api(u, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(b)});
+$('#langSel').onchange = e => { try { localStorage.setItem('fdLang', e.target.value); } catch (x) {}
+  const u = new URL(location.href); u.searchParams.set('lang', e.target.value); location.href = u.toString(); };
+applyLang();
+$('#areaLbl').textContent = t('city');
+
+// ---- 탭
+document.querySelectorAll('#tabs button').forEach(b => b.onclick = () => tab(b.dataset.p));
+function tab(p) {
+  document.querySelectorAll('#tabs button').forEach(x => x.classList.toggle('on', x.dataset.p === p));
+  document.querySelectorAll('.pane').forEach(x => x.classList.toggle('on', x.id === 'p-' + p));
+  if (p === 'h') loadRuns();
+}
+
+// ---- 지도
+const map = L.map('map', {preferCanvas: true}).setView([37.88, 127.73], 11);
+const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19, attribution: '© OpenStreetMap'}).addTo(map);
+const sat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {maxZoom: 19, attribution: 'Esri World Imagery'});
+const JC = {'미기록 변화(점검 필요)': '#d7301f', '기타실적·변화관측(확인)': '#fc8d59', '기록일치(수확실적·변화관측)': '#4575b4',
+            '실적있으나 변화 미관측(이행 확인)': '#9e4fb0', '안정': '#a6d39a'};
+const PC = {'전용확정': '#08519c', '전용후보': '#6baed6', '전용이전': '#bdbdbd'};
+const MC = {'벌채·갱신': '#e6550d', '산지전용': '#6a3d9a', '산림증가': '#31a354'};
+const L_ = {}; let selected = new Set(), hl = null, area = {}, meta = null;
+
+function styleUnit(f) {
+  const s = selected.has(f.properties['단위ID']);
+  return {color: s ? '#c00' : '#555', weight: s ? 2.5 : 0.4, fillColor: JC[f.properties['판정']] || '#ccc', fillOpacity: f.properties['판정'] === '안정' ? 0.25 : 0.7};
+}
+const styleParcel = f => ({color: PC[f.properties['라벨']], weight: 2, fillOpacity: .6, opacity: 1});
+async function loadLayers() {
+  const [su, pc, dz, emd, mp] = await Promise.all(['소반', '산지전용', '재해', '읍면동경계', '모델변화패치'].map(n => api('/api/layer/' + encodeURIComponent(n))));
+  L_['모델'] = L.geoJSON(mp, {style: f => ({color: MC[f.properties.class_ko], weight: 1, fillColor: MC[f.properties.class_ko], fillOpacity: .6}),
+    onEachFeature: (f, l) => l.bindTooltip(t('patch')(tv(f.properties.class_ko), f.properties.area_ha, f.properties.change_year, f.properties.mean_prob), {sticky: true})});
+  L_['읍면동'] = L.geoJSON(emd, {style: {color: '#444', weight: 1, fill: false, dashArray: '3'}, interactive: false}).addTo(map);
+  L_['소반'] = L.geoJSON(su, {style: styleUnit, onEachFeature: (f, l) => {
+    l.bindTooltip(`${f.properties['단위ID']}<br>${tv(f.properties['판정'])}`, {sticky: true});
+    l.on('click', e => { if (e.originalEvent.shiftKey) toggleSel(f.properties['단위ID']); else showAttr('소반', f.properties.fid); });
+  }}).addTo(map);
+  L_['산지전용'] = L.geoJSON(pc, {style: styleParcel,
+    onEachFeature: (f, l) => { l.bindTooltip(`${f.properties['주소']}<br>${f.properties['고시번호']} · ${tv(f.properties['라벨'])}`, {sticky: true});
+      l.on('click', () => showAttr('산지전용', f.properties.fid)); }}).addTo(map);
+  L_['재해'] = L.geoJSON(dz, {pointToLayer: (f, ll) => L.circleMarker(ll, {radius: 5, color: '#000', weight: 1,
+      fillColor: f.properties['유형'] === '산불' ? '#ff3b00' : '#8c510a', fillOpacity: .9}),
+    onEachFeature: (f, l) => { l.bindTooltip(`${tv(f.properties['유형'])} ${f.properties['연도']}`); l.on('click', () => showAttr('재해', f.properties.fid)); }}).addTo(map);
+  L.control.layers({[t('ly_base')]: osm, [t('ly_sat')]: sat}, {[t('ly_emd')]: L_['읍면동'], [t('ly_su')]: L_['소반'],
+    [t('ly_pc')]: L_['산지전용'], [t('ly_dz')]: L_['재해'], [t('ly_m')]: L_['모델']}, {collapsed: true}).addTo(map);
+  map.fitBounds(L_['읍면동'].getBounds());
+  const lg = L.control({position: 'bottomright'});
+  lg.onAdd = () => { const d = L.DomUtil.create('div', 'legend');
+    d.innerHTML = `<b>${t('lg_j')}</b><br>` + Object.entries(JC).map(([k, c]) => `<i style="background:${c}"></i>${tv(k)}`).join('<br>')
+      + `<br><b>${t('lg_p')}</b><br>` + Object.entries(PC).map(([k, c]) => `<i style="background:${c}"></i>${tv(k)}`).join('<br>')
+      + `<br><i style="background:#ff3b00;border-radius:6px"></i>${t('lg_fire')} <i style="background:#8c510a;border-radius:6px"></i>${t('lg_slide')}`
+      + `<br><b>${t('lg_m')}</b><br>` + Object.entries(MC).map(([k, c]) => `<i style="background:${c}"></i>${tv(k)}`).join('<br>')
+      + `<br><i style="background:#ff3b1f;border:2px solid #ffe600"></i>${t('lg_hl')}`; return d; };
+  lg.addTo(map);
+}
+function toggleSel(id) { selected.has(id) ? selected.delete(id) : selected.add(id); L_['소반'].setStyle(styleUnit);
+  $('#selBtn').textContent = t('sel_btn')(selected.size); }
+function flash(bbox) {
+  if (hl) map.removeLayer(hl);
+  hl = L.rectangle([[bbox[1], bbox[0]], [bbox[3], bbox[2]]], {color: '#ffe600', weight: 4, fill: false}).addTo(map);
+  map.fitBounds(hl.getBounds(), {maxZoom: 16, padding: [40, 40]});
+}
+
+// ---- 속성
+async function showAttr(layer, fid, zoom) {
+  tab('a');
+  const d = await api(`/api/feature/${encodeURIComponent(layer)}/${fid}`);
+  if (zoom) flash(d.bbox);
+  const kv = Object.entries(d.attributes).filter(([k]) => k !== 'fid').map(([k, v]) => `<tr><td>${esc(tf(k))}</td><td>${fmt(v)}</td></tr>`).join('');
+  let h = `<h3>${esc(t('attr_of')(tv(layer)))}</h3><table class="kv">${kv}</table>`;
+  for (const [k, rows] of Object.entries(d.related)) h += `<h3>${esc(tf(k))} (${rows.length})</h3>` + (rows.length ? table(rows) : `<div class="muted">${t('none')}</div>`);
+  if (layer === '소반' || layer === '산지전용') h += `<div class="row"><button class="b2" id="aTs">${t('b_ts')}</button>${layer === '소반' ? `<button class="b2" id="aEx">${t('b_ex')}</button><button class="b2" id="aSim">${t('b_sim')}</button>` : ''}</div><div id="ex"></div><div id="ts"></div>`;
+  if (layer === '소반') {
+    const id = d.attributes['단위ID'];
+    h += `<div class="row"><button class="b2" id="aSel">${t('b_area')}</button><button class="b2" id="aAsk">${t('b_ask')}</button></div>`;
+    $('#attr').innerHTML = h;
+    $('#aSel').onclick = () => { if (!selected.has(id)) toggleSel(id); setArea({unit_ids: [...selected]}, t('sel_n')(selected.size)); };
+    $('#aAsk').onclick = () => { selected = new Set([id]); L_['소반'].setStyle(styleUnit); setArea({unit_ids: [id]}, t('unit')(id));
+      $('#qText').value = t('ask_q')(id); tab('q'); };
+  } else $('#attr').innerHTML = h;
+  if ($('#aTs')) $('#aTs').onclick = () => showTs(layer, fid);
+  if ($('#aEx')) $('#aEx').onclick = () => showExplain(fid);
+  if ($('#aSim')) $('#aSim').onclick = () => showSimilar(fid);
+}
+// ---- 변화 해석: 관측(임베딩·지수) → 기록(실적·임상도·재해) → 해석·추가확인·불확실성
+async function showExplain(fid) {
+  $('#ex').innerHTML = `<div class="muted">${t('explaining')}</div>`;
+  try {
+    const d = (await api(`/api/explain/${fid}?lang=${LANG}`)).data, g = d['근거'];
+    const yr = d['연간추이'];
+    $('#ex').innerHTML = `<h3>${t('ex_t')}: ${esc(tv(d['변화경로']))}${d['반복교란'] ? t('repeat') : ''}</h3><table class="kv">
+      <tr><td>${t('obs')}</td><td>${esc(g['관측'])}</td></tr><tr><td>${t('rec')}</td><td>${esc(g['기록'])}</td></tr>
+      <tr><td>${t('interp')}</td><td><b>${esc(g['해석'])}</b></td></tr><tr><td>${t('chk')}</td><td>${esc(g['추가확인'])}</td></tr>
+      <tr><td>${t('unc')}</td><td>${esc(g['불확실성'])}</td></tr></table>` +
+      table(yr.map(r => ({'연도': r['연도'], 'AE 거리': r['AE_연속거리'], 'NDVI': r['NDVI'], 'NDMI': r['NDMI'], 'NDBI': r['NDBI']})));
+  } catch (e) { $('#ex').innerHTML = t('err') + esc(e.message); }
+}
+async function showSimilar(fid) {
+  $('#ex').innerHTML = `<div class="muted">${t('sim_wait')}</div>`;
+  try {
+    const d = (await api('/api/similar/' + fid)).data;
+    $('#ex').innerHTML = `<h3>${t('sim_t')}</h3><div class="muted">${t('sim_note')}</div>` +
+      table(d['후보'].map(r => ({'소반': r['단위ID'], '읍면동': r['읍면동'], '유사도': r['유사도'], '변화경로': r['변화경로'], '수종': r['수종_2025'], '경사차': r['경사차'], '표고차': r['표고차']})));
+    hlIds = d['후보'].map(r => r['단위ID']); L_['소반'].setStyle(styleDim);
+  } catch (e) { $('#ex').innerHTML = t('err') + esc(e.message); }
+}
+// ---- 시계열: Sentinel-2 NDVI(선)와 AlphaEarth 연속연도 임베딩 거리(막대) + 모델 예측
+async function showTs(layer, fid) {
+  $('#ts').innerHTML = `<div class="muted">${t('ts_wait')}</div>`;
+  try {
+    const r = await api(`/api/timeseries/${encodeURIComponent(layer)}/${fid}`);
+    const ys = Object.keys(r['Sentinel-2_연별_평균']), nd = ys.map(y => r['Sentinel-2_연별_평균'][y].NDVI);
+    const ae = Object.values(r['AlphaEarth_연속연도_임베딩거리']), W = 320, H = 150, x = i => 30 + i * (W - 50) / (ys.length - 1);
+    const yN = v => 20 + (1 - v) * 100, aMax = Math.max(0.1, ...ae.filter(v => v !== null)), yA = v => 120 - v / aMax * 60;
+    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;background:#fff;border:1px solid var(--bd);border-radius:4px">`;
+    ae.forEach((v, i) => { if (v === null) return; const xm = (x(i) + x(i + 1)) / 2;
+      svg += `<rect x="${xm - 7}" y="${yA(v)}" width="14" height="${120 - yA(v)}" fill="#7b2cbf" opacity="${v === aMax ? .9 : .35}"><title>AE ${ys[i]}→${ys[i + 1]}: ${v}</title></rect>`; });
+    svg += `<polyline fill="none" stroke="#2f6b3a" stroke-width="2" points="${nd.map((v, i) => v === null ? '' : `${x(i)},${yN(v)}`).join(' ')}"/>`;
+    nd.forEach((v, i) => { if (v !== null) svg += `<circle cx="${x(i)}" cy="${yN(v)}" r="2.5" fill="#2f6b3a"><title>NDVI ${ys[i]}: ${v}</title></circle>`; });
+    ys.forEach((y, i) => svg += `<text x="${x(i)}" y="138" font-size="9" text-anchor="middle" fill="#666">${String(y).slice(2)}</text>`);
+    svg += `<text x="4" y="14" font-size="10" fill="#2f6b3a">— NDVI(S2)</text><text x="80" y="14" font-size="10" fill="#7b2cbf">${t('ts_ae')}</text></svg>`;
+    const fm = r['최종지도(AE+S2)'], mg = r['Mini-GFM(S2)'];
+    const js = o => esc(JSON.stringify(Object.fromEntries(Object.entries(o).map(([k, v]) => [tv(k), v]))));
+    $('#ts').innerHTML = svg + `<table class="kv">
+      <tr><td>${t('ae_peak')}</td><td>${esc(r['AlphaEarth_최대변화구간'])} (2019→2025: ${fmt(r['AlphaEarth_2019→2025_거리'])})</td></tr>
+      <tr><td>${t('fm_px')}</td><td>${js(fm['화소_구성(10 m)'])}</td></tr>
+      <tr><td>${t('fm_yr')}</td><td>${js(fm['변화연도_화소'])}</td></tr>
+      <tr><td>${t('fm_p')}</td><td>${js(fm['평균확률'])}</td></tr>
+      <tr><td>${t('mg_px')}</td><td>${js(mg['화소_구성(20 m, 마스크 전)'])}</td></tr>
+      <tr><td>${t('mg_p')}</td><td>${js(mg['평균확률'])}</td></tr></table>`;
+  } catch (e) { $('#ts').innerHTML = t('err') + esc(e.message); }
+}
+function table(rows) {
+  const cols = Object.keys(rows[0]);
+  return `<table><tr>${cols.map(c => `<th>${esc(tf(c))}</th>`).join('')}</tr>` +
+    rows.map(r => `<tr>${cols.map(c => `<td>${fmt(r[c])}</td>`).join('')}</tr>`).join('') + '</table>';
+}
+
+// ---- 장소 검색
+let st;
+$('#sq').oninput = () => { clearTimeout(st); st = setTimeout(doSearch, 250); };
+async function doSearch() {
+  const q = $('#sq').value.trim(); if (!q) { $('#sres').innerHTML = ''; return; }
+  const rs = await api('/api/search?q=' + encodeURIComponent(q));
+  $('#sres').innerHTML = rs.length ? rs.map((r, i) => `<div class="res" data-i="${i}"><span class="chip">${esc(tv(r.type))}</span>${esc(r.label)}<br><small>${esc(r.sub || '')}</small></div>`).join('')
+    : `<div class="muted">${t('no_res')}</div>`;
+  document.querySelectorAll('#sres .res').forEach(el => el.onclick = () => {
+    const r = rs[+el.dataset.i];
+    if (r.type === '읍면동') { flash(r.bbox); $('#emdSel').value = r.emd; setArea({emd: r.emd}, r.emd); }
+    else showAttr(r.layer, r.fid, true);
+  });
+}
+
+// ---- 대상 지역
+function setArea(a, label) { area = a; $('#areaLbl').textContent = label; }
+$('#emdSel').onchange = e => { const v = e.target.value; if (v) { setArea({emd: v}, v);
+  const l = L_['읍면동'].getLayers().find(x => x.feature.properties.EMD_NM === v); if (l) map.fitBounds(l.getBounds()); } };
+$('#bboxBtn').onclick = () => { const b = map.getBounds();
+  setArea({bbox: [b.getWest(), b.getSouth(), b.getEast(), b.getNorth()].map(v => +v.toFixed(5))}, t('cur_bbox')); };
+$('#selBtn').onclick = () => selected.size ? setArea({unit_ids: [...selected]}, t('sel_n')(selected.size)) : alert(t('need_sel'));
+$('#clrBtn').onclick = () => { clearResult(); selected.clear(); L_['소반'].setStyle(styleUnit); $('#emdSel').value = ''; $('#selBtn').textContent = t('sel_btn')(0); setArea({}, t('city')); };
+
+// ---- 질의 예시 (언어별)
+const EX = {ko: ['춘천 국유림의 2020~2024년 산림변화 중 경영실적과 위성분석 결과가 일치하지 않는 소반을 찾아줘. 사업기록이 없는데 변화가 탐지된 곳과, 사업기록은 있지만 변화 신호가 약한 곳을 구분해줘. 임상도 변화, 재해 이력, 경사와 임도 접근성을 함께 보여주고, 현장 점검 우선 후보 10곳과 선정 근거·불확실성을 지도와 표로 작성해줘.',
+  '사업실적이 없으나 위성 변화가 집중된 소반은 어디인가?', '임상도 조사 이력과 연도별 임상 추정을 바탕으로 동면 국유림의 임상도 재조사 우선순위를 정리해줘',
+  'AlphaEarth 분류모델로 본 북산면 국유림의 2019→2025 피복·임상 변화와, 임상 재판독 후보·산지 내 시설·나지 확대 의심 소반을 정리해줘',
+  '2019~2025년 국유림에서 큰 변화 후 식생 회복이 더딘 소반을 찾고, 벌채·조림 이력과 비교해 현장 점검 소반을 추천해줘', '회복이 양호한 벌채지와 임베딩이 비슷한 소반을 찾아 경사·수종 차이와 함께 비교조사 후보를 정리해줘',
+  '위성 변화는 있는데 2025 임상도에 반영되지 않은 임상도 갱신 검토 소반과 변화 구역 면적표를 정리해줘', '반복 교란 소반과 수분 스트레스 등 식생 이상 의심 소반을 찾아 변화의 의미를 설명해줘',
+  '변화탐지 모델(최종지도·Mini-GFM)과 AlphaEarth·Sentinel-2 원자료가 함께 변화를 가리키는 소반과, 한 신호만 변화로 본 불확실한 소반을 구분해줘', '산지전용 고시 필지 중 위성에서 변화가 확인되는 곳은?',
+  'AlphaEarth가 Sentinel-2보다 변화 탐지에 도움이 되는가?', '수확 실적이 있는데 변화가 관측되지 않은 소반(이행 확인 대상)은?'],
+ en: ['For 2020–2024 forest change in the Chuncheon national forest, find stands where management records and satellite analysis disagree. Separate stands with detected change but no records from stands with records but weak change signals. Show forest-map change, disaster history, slope and forest-road access, and list the top 10 field-inspection candidates with reasons and uncertainty as a map and table.',
+  'Where are stands with concentrated satellite change but no management records?', 'Using forest-map survey history and yearly forest-type estimates, rank stands in Dong-myeon national forest for forest-map re-survey.',
+  'Using the AlphaEarth classifiers, summarize 2019→2025 land-cover and forest-type change in Buksan-myeon, with re-interpretation candidates and suspected non-forest-use expansion.',
+  'Find national-forest stands with slow vegetation recovery after major change in 2019–2025 and recommend inspection stands by comparing harvest and planting records.',
+  'Find stands whose embeddings resemble well-recovered harvest sites and list comparison candidates with slope and species differences.',
+  'List stands with satellite change not yet reflected in the 2025 forest map, with a change-zone area table.', 'Find stands with repeated disturbance or possible vegetation stress and explain what the change means.',
+  'Separate stands where the change models and AlphaEarth/Sentinel-2 data agree on change from uncertain stands flagged by only one signal.', 'Which forest-conversion notice parcels show change in satellite data?',
+  'Does AlphaEarth help change detection more than Sentinel-2?', 'Which stands have harvest records but no observed change (to verify implementation)?']};
+const EXL = EX[LANG] || EX.ko;
+$('#examples').innerHTML = EXL.map((e, i) => `<span class="chip" data-i="${i}" title="${esc(e)}">${esc(e.length > 40 ? e.slice(0, 38) + '…' : e)}</span>`).join('');
+document.querySelectorAll('#examples .chip').forEach(c => c.onclick = () => $('#qText').value = EXL[+c.dataset.i]);
+let curRun = null;
+$('#runBtn').onclick = async () => {
+  const q = $('#qText').value.trim(); if (!q) return;
+  $('#runBtn').disabled = true; $('#log').hidden = false; $('#log').textContent = '';
+  try {
+    const {job} = await post('/api/query', {query: q, area, mode: $('#mode').value, lang: LANG});
+    while (true) {
+      await new Promise(r => setTimeout(r, 1500));
+      const j = await api('/api/job/' + job);
+      $('#log').textContent = j.logs.join('\n'); $('#log').scrollTop = 1e9;
+      if (j.status !== 'running') { if (j.run && j.status === 'done') openRun(j.run); break; }
+    }
+  } catch (e) { $('#log').textContent += '\n' + t('err') + e.message; }
+  $('#runBtn').disabled = false;
+};
+function openRun(run) {
+  curRun = run; $('#repEmpty').hidden = true; $('#rep').hidden = false;
+  $('#rep').onload = () => { try { $('#repTitle').textContent = $('#rep').contentDocument.title || t('report'); } catch (e) {} };
+  $('#rep').src = `/api/runs/${run}/report.html`;
+  ['#showMap', '#dlMd', '#dlHtml', '#printBtn'].forEach(x => $(x).disabled = false);
+  showResult(run);
+}
+$('#dlMd').onclick = () => location.href = `/api/runs/${curRun}/file/report.md`;
+$('#dlHtml').onclick = () => location.href = `/api/runs/${curRun}/report.html?download=true`;
+$('#printBtn').onclick = () => $('#rep').contentWindow.print();
+$('#showMap').onclick = () => showResult(curRun);
+
+// ---- 결과 강조: 나머지는 흐리게, 결과 소반은 노란 후광 + 색 경계 + 깜빡이는 번호 + 목록 패널
+let hlGroup = null, hlCtl = null, hlIds = [];
+function styleDim(f) {
+  if (hlIds.includes(f.properties['단위ID'])) return {color: '#b30000', weight: 3, fillColor: '#ff3b1f', fillOpacity: 0.55};
+  return {color: '#999', weight: 0.3, fillColor: JC[f.properties['판정']] || '#ccc', fillOpacity: 0.07};
+}
+function clearResult() {
+  hlIds = []; if (hlGroup) map.removeLayer(hlGroup); if (hlCtl) map.removeControl(hlCtl); hlGroup = hlCtl = null;
+  if (L_['소반']) { L_['소반'].setStyle(styleUnit); L_['산지전용'].setStyle(styleParcel); }
+}
+async function showResult(run) {
+  let h = null;
+  try { h = await api(`/api/runs/${run}/file/highlight.json`); } catch (e) {}
+  if (!h) {   // 강조 정보가 없으면 보고서 본문의 소반ID 순서대로
+    const tx = await (await fetch(`/api/runs/${run}/file/report.md`)).text();
+    h = {title: t('rep_units'), unit_ids: [...new Set(tx.match(/\d{3}-\d{3}\/\d{3}-\d{3}/g) || [])], parcel_ids: []};
+  }
+  const groups = h.groups || [h];   // make_map 호출마다 한 묶음: 1번째 빨강 숫자, 2번째 보라 B1…, 3번째 파랑 C1…
+  const GC = ['#ff3b1f', '#7b2cbf', '#1f78b4'], PRE = ['', 'B', 'C', 'D'];
+  clearResult();
+  hlIds = groups.flatMap(g => g.unit_ids || []);
+  const pids = new Set(groups.flatMap(g => g.parcel_ids || []));
+  if (!hlIds.length && !pids.size) return;
+  L_['소반'].setStyle(styleDim);
+  L_['산지전용'].setStyle(f => pids.has(f.properties['레코드ID']) ? {color: '#0b2a5c', weight: 4, fillColor: '#1f5fbf', fillOpacity: .85, opacity: 1}
+                                                                  : {color: '#aaa', weight: 1, fillOpacity: .08, opacity: .3});
+  hlGroup = L.featureGroup().addTo(map);
+  const items = [];
+  groups.forEach((g, gi) => {
+    const col = GC[gi % GC.length], pre = PRE[gi] ?? `G${gi + 1}-`;
+    items.push({head: g.title, col});
+    (g.unit_ids || []).forEach((id, i) => {
+      const l = L_['소반'].getLayers().find(x => x.feature.properties['단위ID'] === id); if (!l) return;
+      const n = pre + (i + 1);
+      L.geoJSON(l.feature, {style: {color: '#ffe600', weight: 10, opacity: .9, fill: false}, interactive: false}).addTo(hlGroup);   // 후광
+      L.geoJSON(l.feature, {style: {color: col, weight: 3, fill: true, fillColor: col, fillOpacity: .45}, interactive: false}).addTo(hlGroup);
+      L.marker(l.getBounds().getCenter(), {icon: L.divIcon({className: '', html: `<div class="hlnum" style="background:${col};width:${n.length > 2 ? 32 : 26}px">${n}</div>`,
+        iconSize: [26, 26], iconAnchor: [13, 13]}), zIndexOffset: 1000 - gi * 100})
+        .on('click', () => showAttr('소반', l.feature.properties.fid)).bindTooltip(`${n}. ${id}<br>${tv(l.feature.properties['판정'])}`).addTo(hlGroup);
+      items.push({n, id, col, sub: `${l.feature.properties['읍면동'] || ''} · ${tv(l.feature.properties['판정'])}`, l});
+    });
+  });
+  L_['산지전용'].getLayers().filter(l => pids.has(l.feature.properties['레코드ID'])).forEach(l => {
+    L.circleMarker(l.getBounds().getCenter(), {radius: 9, color: '#ffe600', weight: 4, fillColor: '#1f5fbf', fillOpacity: 1}).addTo(hlGroup);
+    items.push({n: '■', id: l.feature.properties['레코드ID'], col: '#1f5fbf', sub: l.feature.properties['주소'], l});
+  });
+  hlCtl = L.control({position: 'topleft'});
+  hlCtl.onAdd = () => {
+    const d = L.DomUtil.create('div', 'hllist');
+    d.innerHTML = `<div class="t">${t('res_n')(items.filter(x => x.l).length)} <button>${t('clear')}</button></div>` +
+      items.map((x, k) => x.head ? `<div style="padding:4px 8px;background:#f6f6f6;border-left:4px solid ${x.col};font-weight:600">${esc(x.head)}</div>`
+        : `<div class="i" data-k="${k}"><b style="color:${x.col};width:auto;margin-right:6px">${x.n}</b>${esc(x.id)}<br><small>${esc(x.sub)}</small></div>`).join('');
+    L.DomEvent.disableClickPropagation(d); L.DomEvent.disableScrollPropagation(d);
+    d.querySelector('button').onclick = clearResult;
+    d.querySelectorAll('.i').forEach(el => el.onclick = () => map.fitBounds(items[+el.dataset.k].l.getBounds(), {maxZoom: 16, padding: [60, 60]}));
+    return d;
+  };
+  hlCtl.addTo(map);
+  if (hlGroup.getLayers().length) map.fitBounds(hlGroup.getBounds(), {padding: [50, 50], maxZoom: 15});
+}
+
+// ---- 지역 요약
+$('#sumBtn').onclick = async () => {
+  $('#sum').innerHTML = `<div class="muted">${t('computing')}</div>`;
+  try {
+    const d = await post('/api/area_summary', area), s = d.summary;
+    let h = `<h3>${esc(s['지역'] === '춘천시 전체' ? t('city') : s['지역'])}</h3><table class="kv">
+      <tr><td>${t('nf')}</td><td>${fmt(s['국유림_소반'])} / ${fmt(s['국유림_면적_ha'])} ha</td></tr>
+      <tr><td>${t('ae_ha')}</td><td>${fmt(s['AE_변화면적_ha'])} ha</td></tr><tr><td>${t('s2_ha')}</td><td>${fmt(s['S2_변화면적_ha'])} ha</td></tr>
+      <tr><td>${t('dis')}</td><td>${esc(JSON.stringify(Object.fromEntries(Object.entries(s['재해_2019_2025']).map(([k, v]) => [tv(k), v]))))}</td></tr>
+      <tr><td>${t('ae_yr')}</td><td>${esc(JSON.stringify(s['AE_변화연도별_소반수']))}</td></tr></table>`;
+    if (s['판정별'].length) h += `<h3>${t('by_j')}</h3>` + table(s['판정별']);
+    if (s['사업실적_2019_2025'].length) h += `<h3>${t('recs')}</h3>` + table(s['사업실적_2019_2025']);
+    if (s['산지전용_필지'].length) h += `<h3>${t('conv')}</h3>` + table(s['산지전용_필지']);
+    if (d.ranking.length) h += `<h3>${t('rank')}</h3>` + table(d.ranking.map(r => ({'소반': r['단위ID'], '판정': r['판정'], '점수': r['점수'], '안정성': r['순위안정성'], 'AE변화ha': r['AE_변화면적_ha']})));
+    if (d.warnings.length) h += `<div class="muted">⚠ ${esc(d.warnings.join(' / '))}</div>`;
+    $('#sum').innerHTML = h;
+  } catch (e) { $('#sum').innerHTML = t('err') + esc(e.message); }
+};
+$('#sumSave').onclick = () => { $('#qText').value = t('save_q')($('#areaLbl').textContent);
+  $('#mode').value = 'rule'; tab('q'); $('#runBtn').click(); };
+
+// ---- 보고서 목록
+async function loadRuns() {
+  const rs = await api('/api/runs');
+  $('#runs').innerHTML = rs.length ? rs.map(r => `<div class="res" data-r="${r.run}"><b>${esc(r.title)}</b><br><small>${r.run} · ${esc(r.mode || '')} · ${esc((r.query || '').slice(0, 60))}</small></div>`).join('')
+    : `<div class="muted">${t('no_runs')}</div>`;
+  document.querySelectorAll('#runs .res').forEach(el => el.onclick = () => openRun(el.dataset.r));
+}
+$('#runsBtn').onclick = loadRuns;
+
+window.addEventListener('resize', () => map.invalidateSize());
+$('#status').textContent = t('loading');
+(async () => {
+  meta = await api('/api/meta');
+  meta.emd.forEach(e => $('#emdSel').insertAdjacentHTML('beforeend', `<option>${esc(e)}</option>`));
+  $('#status').textContent = (meta.llm ? t('llm_on')(meta.model) : t('llm_off')) + t('models')(meta.models['최종지도(AE+S2)'], meta.models['Mini-GFM(S2)']);
+  $('#modeNote').textContent = (meta.llm ? '' : t('no_key')) + t('rule_ko');
+  await loadLayers();
+  window.__ready = true;
+})().catch(e => $('#status').textContent = t('err') + e.message);
+</script>
+</body>
+</html>

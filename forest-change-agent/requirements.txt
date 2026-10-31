@@ -1,0 +1,13 @@
+earthengine-api>=1.7
+geopandas>=1.1
+pyogrio>=0.12
+shapely>=2.1
+pandas>=2.3
+numpy>=2.3
+pyarrow>=20
+scikit-learn>=1.6
+scipy>=1.14
+joblib>=1.4
+folium>=0.20
+anthropic>=1.8
+google-genai>=2.25
