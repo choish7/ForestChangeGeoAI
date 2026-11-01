@@ -21,7 +21,9 @@ import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parent.parent
-DB_DIR = ROOT / "output" / "의사결정DB"
+# 서비스 자료는 이 폴더의 data/ 에서 읽는다 (sync_data.py 로 채움). 다른 위치를 쓰려면 환경변수 FDA_DATA_DIR.
+DATA = Path(__import__("os").environ.get("FDA_DATA_DIR", Path(__file__).resolve().parent / "data"))
+DB_DIR = DATA / "의사결정DB"
 DB = DB_DIR / "forest_decision.sqlite"
 GPKG = DB_DIR / "forest_decision.gpkg"
 RUNS = Path(__file__).resolve().parent / "outputs"
@@ -40,9 +42,9 @@ COLUMNS = {
         "임도거리_m": "소반 대표점→가장 가까운 임도", "도로거리_m": "소반 대표점→가장 가까운 도로(1:1,000)",
         "FM_벌채·갱신_ha": "학습 모델 최종지도(AlphaEarth+S2, 10 m, 산림 마스크·최소면적) 벌채·갱신 면적", "FM_산지전용_ha": "", "FM_산림증가_ha": "",
         "FM_변화면적_ha": "최종지도 변화 합계", "FM_변화확률": "최종지도 변화확률(1−무변화확률) 평균", "FM_주변화유형": "", "FM_변화연도": "최종지도 변화 화소의 최빈 변화연도",
-        "MG_벌채·갱신_ha": "Mini-GFM(Sentinel-2 시계열 파운데이션 모델, 20 m, 산림 마스크) 벌채·갱신 면적", "MG_산지전용_ha": "", "MG_산림증가_ha": "",
+        "MG_벌채·갱신_ha": "S2-TSFM(Sentinel-2 시계열 파운데이션 모델, 20 m, 산림 마스크) 벌채·갱신 면적", "MG_산지전용_ha": "", "MG_산림증가_ha": "",
         "MG_변화면적_ha": "", "MG_변화확률": "", "MG_주변화유형": "",
-        "신호일치수": "AE 임베딩거리·Mini-GFM·최종지도 중 변화로 본 신호 수 0~3 (클수록 확실)", "판정_AE거리": "AE 임베딩거리만으로 본 변화/안정",
+        "신호일치수": "AE 임베딩거리·S2-TSFM·최종지도 중 변화로 본 신호 수 0~3 (클수록 확실)", "판정_AE거리": "AE 임베딩거리만으로 본 변화/안정",
         "판정": "변화관측 = 최종지도 변화면적 ≥ 0.5 ha. 기록일치(수확실적·변화관측) / 미기록 변화(점검 필요) / 기타실적·변화관측(확인) / 실적있으나 변화 미관측(이행 확인) / 안정",
     },
     "산지전용": {
@@ -78,7 +80,7 @@ SOURCES = {
     "AlphaEarth": "GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL 2017~2025 64차원, 연속연도 거리 (10 m)",
     "Sentinel-2": "COPERNICUS/S2_SR_HARMONIZED 연간 지수 2017~2025 (20 m, 54밴드)",
     "최종지도 모델": "AlphaEarth+S2 지수 HistGradientBoosting, 산림 마스크·최소면적 (final_change_2019_2025)",
-    "Mini-GFM 모델": "Sentinel-2 시계열 마스크 오토인코더 + 분류기 (mini_gfm_chuncheon)",
+    "S2-TSFM 모델": "Sentinel-2 시계열 마스크 오토인코더 + 분류기 (s2_tsfm_chuncheon)",
     "사업실적": "국유림 경영계획부 7·8·9차 산림사업실적 (춘천국유림관리소, 임소반 결합)",
     "임상도": "임상도 2019·2025 (51110)",
     "산지전용": "춘천시 보전산지 해제 고시 2017~2024 세부내역 + 연속지적도",
@@ -88,7 +90,7 @@ SOURCES = {
 LIMITS = [
     "변화 신호는 '관측된 변화'이며 원인을 뜻하지 않는다. 실적·재해와의 관계는 공간적 동시발생일 뿐 인과가 아니다.",
     "AE_변화연도는 임베딩이 가장 크게 바뀐 해로, 실제 발생일과 1년 이상 다를 수 있다.",
-    "학습 모델의 산지전용 정확도는 낮다(최종지도 F1 0.20, Mini-GFM 0.13). 산지전용 유형은 후보로만 본다.",
+    "학습 모델의 산지전용 정확도는 낮다(최종지도 F1 0.20, S2-TSFM 0.13). 산지전용 유형은 후보로만 본다.",
     "신호일치수 1 은 한 신호만 변화로 본 경우로 오탐 가능성이 크다.",
     "사업실적은 국유림 소반만 있다(사유림 사업 없음). 실적 위치는 소반 단위라 소반 일부 사업도 소반 전체로 연결된다.",
     "임계값(오탐률 5%)은 검증된 무변화 산림화소 기준이다. 큰 소반은 무변화여도 변화 화소가 일부 생긴다.",
@@ -267,7 +269,7 @@ def evaluate_foundation_model(s: Session):
     unit = {}
     e = e.assign(FM_비율=e["FM_변화면적_ha"] / e["면적_ha"], MG_비율=e["MG_변화면적_ha"] / e["면적_ha"])
     for name, col, sign in [("AlphaEarth 임베딩거리 변화비율", "AE_변화비율", 1), ("Sentinel-2 NDVI 변화비율", "S2_변화비율", 1),
-                            ("Sentinel-2 ΔNDVI", "S2_dNDVI", 1), ("모델: Mini-GFM(S2) 변화비율", "MG_비율", 1),
+                            ("Sentinel-2 ΔNDVI", "S2_dNDVI", 1), ("모델: S2-TSFM 변화비율", "MG_비율", 1),
                             ("모델: 최종지도(AE+S2) 변화비율", "FM_비율", 1), ("모델: 최종지도 변화확률", "FM_변화확률", 1)]:
         v = (e[col] * sign).fillna(0)
         unit[name] = {"AUROC": round(float(roc_auc_score(y, v)), 3), "AP": round(float(average_precision_score(y, v)), 3)}
@@ -278,26 +280,26 @@ def evaluate_foundation_model(s: Session):
         parcels[lab] = {"필지": len(q), "AE_변화비율≥0.5": round(float((q["AE_변화비율"] >= 0.5).mean()), 3),
                         "S2_변화비율≥0.5": round(float((q["S2_변화비율"] >= 0.5).mean()), 3),
                         "최종지도_변화있음": round(float((q["FM_변화면적_ha"] > 0).mean()), 3),
-                        "Mini-GFM_변화있음": round(float((q["MG_변화면적_ha"] > 0).mean()), 3)}
+                        "S2-TSFM_변화있음": round(float((q["MG_변화면적_ha"] > 0).mean()), 3)}
     ref = json.loads(REF.read_text(encoding="utf-8")) if REF.exists() else {}
     return _ok({
         "화소_검증(오탐률 5%에서 변화화소 탐지율)": {"AlphaEarth": meta["보정"]["AE"], "Sentinel-2": meta["보정"]["S2"]},
         "소반_검증(임상도 변화 확인 소반 vs 확정무변화 소반)": {"양성": int(y.sum()), "음성": int((1 - y).sum()), **unit},
         "수확·갱신 실적 소반의 변화관측 비율": {"소반": len(rec), "AE 임베딩거리": round(float(((rec["AE_변화면적_ha"] >= 0.5) & (rec["AE_변화비율"] >= 0.15)).mean()), 3),
                                           "최종지도": round(float((rec["FM_변화면적_ha"] >= 0.5).mean()), 3),
-                                          "Mini-GFM": round(float(((rec["MG_변화면적_ha"] >= 0.5) & (rec["MG_변화면적_ha"] / rec["면적_ha"] >= 0.15)).mean()), 3)},
+                                          "S2-TSFM": round(float(((rec["MG_변화면적_ha"] >= 0.5) & (rec["MG_변화면적_ha"] / rec["면적_ha"] >= 0.15)).mean()), 3)},
         "학습모델_홀드아웃(모델 보고서)": meta.get("모델", {}),
         "산지전용_고시필지(필지 화소 절반 이상이 변화)": parcels,
         "학습모델_비교(기존 실험)": ref,
     }, ["소반 검증의 양성은 임상도로 확인된 변화(59개 내외)로 표본이 작다",
-        "학습 모델(Mini-GFM·최종지도)은 이 합의 라벨로 학습했으므로 소반 검증 값이 낙관적이다. 모델 간 비교는 '학습모델_홀드아웃' 값을 쓸 것. "
+        "학습 모델(S2-TSFM·최종지도)은 이 합의 라벨로 학습했으므로 소반 검증 값이 낙관적이다. 모델 간 비교는 '학습모델_홀드아웃' 값을 쓸 것. "
         "AE 임베딩거리·S2 지수는 라벨 없이 계산한 신호라 소반 검증이 공정하다","산지전용 전용이전 필지도 AE 변화가 높게 나올 수 있다(필지 경계 화소·주변 개발)"],
         ["build_meta.json", "forest_decision.sqlite", str(REF.name)])
 
 
-AE_FILE = ROOT / "output" / "Chuncheon_AE_{}_64Bands_int8.tif"
-S2_FILE = ROOT / "output" / "Chuncheon_S2_2017_2025_54Bands.tif"
-FM_DIR, MG_DIR = ROOT / "final_change_2019_2025", ROOT / "mini_gfm_chuncheon"
+AE_FILE = DATA / "satellite" / "Chuncheon_AE_{}_64Bands_int8.tif"
+S2_FILE = DATA / "satellite" / "Chuncheon_S2_2017_2025_54Bands.tif"
+FM_DIR, TSFM_DIR = DATA / "final_change_2019_2025", DATA / "s2_tsfm_chuncheon"
 CLS_NAMES = {0: "무변화", 1: "벌채·갱신", 2: "산지전용", 3: "산림증가", 255: "산림 밖(마스크)"}
 
 
@@ -352,8 +354,8 @@ def unit_timeseries(s: Session, unit_id: str | None = None, record_id: str | Non
     fc, mf = _window(FM_DIR / "final_change_class.tif", geom)
     fy, _ = _window(FM_DIR / "final_change_year.tif", geom)
     fp, _ = _window(FM_DIR / "final_change_prob.tif", geom)
-    mc, mm = _window(MG_DIR / "change_class.tif", geom)
-    mp, _ = _window(MG_DIR / "change_prob.tif", geom)
+    mc, mm = _window(TSFM_DIR / "change_class.tif", geom)
+    mp, _ = _window(TSFM_DIR / "change_prob.tif", geom)
     counts = lambda v: {CLS_NAMES[int(k)]: int(c) for k, c in zip(*np.unique(v, return_counts=True))}
     prob = lambda p, mk: {n: mean(np.where(p[k] == -9999, np.nan, p[k])[mk]) for k, n in enumerate(["무변화", "벌채·갱신", "산지전용", "산림증가"])}
     fyv = fy[0][mf]
@@ -364,9 +366,9 @@ def unit_timeseries(s: Session, unit_id: str | None = None, record_id: str | Non
            "최종지도(AE+S2)": {"화소_구성(10 m)": counts(fc[0][mf]),
                            "변화연도_화소": {int(k): int(c) for k, c in zip(*np.unique(fyv[fyv > 0], return_counts=True))},
                            "평균확률": prob(fp, mf)},
-           "Mini-GFM(S2)": {"화소_구성(20 m, 마스크 전)": counts(mc[0][mm]), "평균확률": prob(mp, mm)}}
+           "S2-TSFM": {"화소_구성(20 m, 마스크 전)": counts(mc[0][mm]), "평균확률": prob(mp, mm)}}
     return _ok(out, ["NDVI·임베딩 거리는 대상 전체 평균이라 일부 구역의 변화는 희석된다"],
-               [S2_FILE.name, "Chuncheon_AE_<연도>_64Bands_int8.tif", FM_DIR.name, MG_DIR.name])
+               [S2_FILE.name, "Chuncheon_AE_<연도>_64Bands_int8.tif", FM_DIR.name, TSFM_DIR.name])
 
 
 def make_map(s: Session, title: str, unit_ids: list | None = None, parcel_ids: list | None = None, filename: str = "map.png"):
@@ -762,7 +764,7 @@ TOOL_SCHEMAS = [
          "judgements": {"type": "array", "items": {"type": "string"}, "description": "대상 판정 (기본: 미기록 변화(점검 필요), 기타실적·변화관측(확인))"},
          "emd": {"type": "string", "description": "읍면동 한정 (예: 북산면)"},
          "weights": {"type": "object", "description": "위성변화·기록없음·재해이력·접근용이 가중치 (기본 0.4/0.3/0.15/0.15)"}}}},
-    {"name": "unit_timeseries", "description": "소반(unit_id) 또는 산지전용 필지(record_id)의 원자료 시계열과 모델 예측: Sentinel-2 NDVI·NDMI 2017~2025, AlphaEarth 연속연도 임베딩 거리, 최종지도·Mini-GFM 유형·확률·변화연도. 후보의 변화 시점·근거 확인용 (호출당 수 초).",
+    {"name": "unit_timeseries", "description": "소반(unit_id) 또는 산지전용 필지(record_id)의 원자료 시계열과 모델 예측: Sentinel-2 NDVI·NDMI 2017~2025, AlphaEarth 연속연도 임베딩 거리, 최종지도·S2-TSFM 유형·확률·변화연도. 후보의 변화 시점·근거 확인용 (호출당 수 초).",
      "input_schema": {"type": "object", "properties": {"unit_id": {"type": "string"}, "record_id": {"type": "string"}}}},
     {"name": "survey_history", "description": "소반의 임상도 조사 이력(2019·2024·2025판 갱신년도, 연도별 관측·유지추정·변화구간, 입목 변화 구간)과 연도별 임상도 라벨로 학습한 AlphaEarth 연도별 임상 추정, 위성 변화가 마지막 조사 이후인지.",
      "input_schema": {"type": "object", "properties": {"unit_id": {"type": "string"}}, "required": ["unit_id"]}},
@@ -787,7 +789,7 @@ TOOL_SCHEMAS = [
                                                         "unit_ids": {"type": "array", "items": {"type": "string"}}, "min_ha": {"type": "number"}, "top_n": {"type": "integer"}}}},
     {"name": "embedding_relations", "description": "임베딩 차원과 NDVI·NDMI·NDBI의 Spearman 상관(탐색용). 차원에 의미를 명명하는 근거로 쓰지 않는다.",
      "input_schema": {"type": "object", "properties": {"index": {"type": "string"}, "kind": {"type": "string"}, "top_n": {"type": "integer"}}}},
-    {"name": "evaluate_foundation_model", "description": "AlphaEarth 임베딩, Sentinel-2 지수, 학습 모델(Mini-GFM, 최종지도)의 변화 탐지 성능을 같은 기준(화소·소반·산지전용 고시 필지·모델 홀드아웃)으로 비교.",
+    {"name": "evaluate_foundation_model", "description": "AlphaEarth 임베딩, Sentinel-2 지수, 학습 모델(S2-TSFM, 최종지도)의 변화 탐지 성능을 같은 기준(화소·소반·산지전용 고시 필지·모델 홀드아웃)으로 비교.",
      "input_schema": {"type": "object", "properties": {}}},
     {"name": "make_map", "description": "선택한 소반(빨강, 번호=목록 순서)과 산지전용 필지(파랑)를 춘천시 지도에 표시한 PNG 생성.",
      "input_schema": {"type": "object", "properties": {"title": {"type": "string"}, "unit_ids": {"type": "array", "items": {"type": "string"}},

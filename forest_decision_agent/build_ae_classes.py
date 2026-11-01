@@ -24,7 +24,7 @@ from sklearn.ensemble import HistGradientBoostingClassifier
 from sklearn.metrics import classification_report
 
 ROOT = Path(__file__).resolve().parent.parent
-MD = ROOT / "ae_class_models"
+MD = ROOT / "forest-change-agent" / "models" / "ae_class_models"
 OUT = ROOT / "output" / "ae_class_maps"
 DB_DIR = ROOT / "output" / "의사결정DB"
 AE = {y: ROOT / "output" / f"Chuncheon_AE_{y}_64Bands_int8.tif" for y in range(2017, 2026)}

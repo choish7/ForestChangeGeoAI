@@ -27,7 +27,7 @@ from rasterio.features import rasterize
 from rasterio.warp import reproject
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "scripts"))
+sys.path.insert(0, str(ROOT / "forest-change-agent" / "prep"))   # combine_thinning_forest_type
 from combine_thinning_forest_type import DNST, FRTP, KOFTR, norm_code  # noqa: E402
 
 OUT = ROOT / "output"
@@ -55,7 +55,7 @@ def zonal_mean(zid, arr, n, sel=None):
 
 
 def dominant(units, year):
-    f = gpd.read_file(ROOT / f"임상도 {year} 51110" / "51110.shp", encoding="cp949",
+    f = gpd.read_file(ROOT / "forest-change-agent" / "data" / f"임상도 {year} 51110" / "51110.shp", encoding="cp949",
                       columns=["FRTP_CD", "KOFTR_GROU", "AGCLS_CD", "DNST_CD", "geometry"])
     for c in ("FRTP_CD", "KOFTR_GROU", "AGCLS_CD", "DNST_CD"):
         f[c] = f[c].map(norm_code)

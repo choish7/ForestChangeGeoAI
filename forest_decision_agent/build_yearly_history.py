@@ -21,7 +21,7 @@ import pandas as pd
 from sklearn.metrics import f1_score
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "scripts"))
+sys.path.insert(0, str(ROOT / "forest-change-agent" / "prep"))   # validate_yearly_ae_s2
 from validate_yearly_ae_s2 import YRS, ae_state, model, read_ae  # noqa: E402
 
 V = ROOT / "output" / "연도별라벨" / "검증용"
@@ -54,7 +54,7 @@ def main():
     ok = ~np.isnan(Xtr).all(1)
     m4 = model().fit(Xtr[ok], tr["클래스"].to_numpy()[ok])
     joblib.dump({"model": m4, "labels": CLS4, "학습": "임상도 연도별 A등급(관측·유지추정), 검증블록 0"},
-                ROOT / "ae_class_models" / "FT4_yearly_model_local.joblib")
+                ROOT / "forest-change-agent" / "models" / "ae_class_models" / "FT4_yearly_model_local.joblib")
     okt = ~np.isnan(Xte).all(1)
     pt = m4.predict(Xte[okt])
     te = te[okt].assign(예측=pt)
@@ -76,7 +76,7 @@ def main():
     oka = ~np.isnan(Xall).all(1)
     m4 = model().fit(Xall[oka], yall[oka])
     joblib.dump({"model": m4, "labels": CLS4, "학습": "임상도 연도별 A등급(관측·유지추정) 전체 블록",
-                 "성능": "학습 블록으로 학습·검증 블록 평가 결과(build_meta 연도별임상모델)"}, ROOT / "ae_class_models" / "FT4_yearly_model_local.joblib")
+                 "성능": "학습 블록으로 학습·검증 블록 평가 결과(build_meta 연도별임상모델)"}, ROOT / "forest-change-agent" / "models" / "ae_class_models" / "FT4_yearly_model_local.joblib")
     print(f"배포 모델 학습 표본 {int(oka.sum()):,}", flush=True)
 
     # 2) 모든 표본점 × 연도 예측 → 소반별 연도별 구성

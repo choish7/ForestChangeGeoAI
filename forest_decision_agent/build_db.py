@@ -23,7 +23,7 @@ from rasterio.features import rasterize
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "output"
 DB_DIR = OUT / "의사결정DB"
-GIS = Path("C:/src/ai_test/공간데이터/춘천_산림공간정보.gpkg")   # 임도·도로 (forest_agent 실습 공간자료)
+GIS = ROOT / "forest-change-agent" / "data" / "춘천_임도_도로.gpkg"   # 임도·도로 (원본 C:/src/ai_test/공간데이터/춘천_산림공간정보.gpkg 의 두 레이어)
 AE_DIST = OUT / "Chuncheon_AE_consec_dist_2017_2025.tif"
 S2 = OUT / "Chuncheon_S2_2019_2025_42Bands.tif"
 LAB_AE, LAB_S2 = OUT / "Chuncheon_labels_AE_10m.tif", OUT / "Chuncheon_labels_S2_20m.tif"
@@ -32,7 +32,7 @@ CHANGE_HA = 0.5          # 변화 관측 기준 (임상도 최소 구획 0.5 ha)
 CHANGE_RATIO = 0.15      # 그리고 소반 화소의 15% 이상 (무변화 소반 중앙값 0.026 의 약 6배, 수확실적 소반 29/31 포함)
 CRS = 5186
 # 학습된 변화탐지 모델 결과 (Colab 학습 → 내려받음)
-MG_DIR = ROOT / "mini_gfm_chuncheon"            # Sentinel-2 Mini-GFM (20 m, 2019~2025 42밴드, 지수+GFM 임베딩 분류기)
+TSFM_DIR = ROOT / "forest-change-agent" / "models" / "s2_tsfm_chuncheon"            # Sentinel-2 S2-TSFM (20 m, 2019~2025 42밴드, 지수+GFM 임베딩 분류기)
 FM_DIR = ROOT / "final_change_2019_2025"        # AlphaEarth + S2 지수 최종 변화지도 (10 m, 산림 마스크·최소면적 적용)
 MASK_S2 = OUT / "Chuncheon_forestmask_S2_20m.tif"
 CLS = {1: "벌채·갱신", 2: "산지전용", 3: "산림증가"}
@@ -63,16 +63,16 @@ def s2_signal():
 
 
 def model_layers():
-    """모델 예측 래스터 → 지표 레이어. Mini-GFM 은 산림 마스크 밖을 0(변화 아님)으로, 최종지도는 이미 마스크·최소면적 적용."""
+    """모델 예측 래스터 → 지표 레이어. S2-TSFM 은 산림 마스크 밖을 0(변화 아님)으로, 최종지도는 이미 마스크·최소면적 적용."""
     with rasterio.open(FM_DIR / "final_change_class.tif") as d:
         fc, fm_crs, fm_tf = d.read(1), d.crs, d.transform
     with rasterio.open(FM_DIR / "final_change_prob.tif") as d:
         fp = 1 - d.read(1, masked=True).filled(np.nan)
     with rasterio.open(FM_DIR / "final_change_year.tif") as d:
         fy = d.read(1).astype("int16")
-    with rasterio.open(MG_DIR / "change_class.tif") as d:
+    with rasterio.open(TSFM_DIR / "change_class.tif") as d:
         mc, mg_crs, mg_tf = d.read(1), d.crs, d.transform
-    with rasterio.open(MG_DIR / "change_prob.tif") as d:
+    with rasterio.open(TSFM_DIR / "change_prob.tif") as d:
         mp = 1 - d.read(1, masked=True).filled(np.nan)
     with rasterio.open(MASK_S2) as d:
         forest = d.read(1) == 1
@@ -158,7 +158,7 @@ def main():
             gdf[k] = zs[k]
         gdf["AE_변화연도"] = mode_year(zid, ae_yr, ae > t_ae, len(gdf))
         gdf["AE_변화연도"] = gdf["AE_변화연도"].astype("Int64").replace(0, pd.NA)
-        # 학습 모델: 최종지도(AE+S2, 10 m) · Mini-GFM(S2, 20 m)
+        # 학습 모델: 최종지도(AE+S2, 10 m) · S2-TSFM(S2, 20 m)
         zf, zidf = zonal(gdf, fm_crs, fm_tf, fc.shape, fm, all_touched)
         zm, _ = zonal(gdf, mg_crs, mg_tf, mg["MG_변화확률"].shape, mg, all_touched)
         for pre, z, px in (("FM", zf, 0.01), ("MG", zm, 0.04)):
@@ -201,7 +201,7 @@ def main():
     dis = gpd.sjoin_nearest(dis, units[["단위ID", "geometry"]], distance_col="소반거리_m").drop(columns="index_right")
 
     # 판정 (규칙): 변화관측 = 학습 모델 최종지도(AlphaEarth+S2)의 변화면적 ≥ 0.5 ha
-    #   신호일치수 = AE 임베딩거리 / Mini-GFM(S2) / 최종지도 중 변화관측으로 본 신호 수 (불확실성 지표)
+    #   신호일치수 = AE 임베딩거리 / S2-TSFM / 최종지도 중 변화관측으로 본 신호 수 (불확실성 지표)
     obs_ae = (units["AE_변화면적_ha"] >= CHANGE_HA) & (units["AE_변화비율"] >= CHANGE_RATIO)
     obs_mg = (units["MG_변화면적_ha"] >= CHANGE_HA) & (units["MG_변화면적_ha"] / units["면적_ha"] >= CHANGE_RATIO)
     obs = units["FM_변화면적_ha"] >= CHANGE_HA
@@ -242,9 +242,9 @@ def main():
             df.to_sql(name, con, index=False)
     meta = {"임계값": {"AE_거리": round(t_ae, 4), "S2_NDVI감소": round(t_s2, 4), "기준": "검증 무변화 산림화소 상위 5%"},
             "보정": {"AE": cal_ae, "S2": cal_s2}, "변화관측_기준": f"학습 모델 최종지도(AlphaEarth+S2) 변화면적 ≥ {CHANGE_HA} ha",
-            "신호일치_기준": f"AE 임베딩거리·Mini-GFM 은 변화면적 ≥ {CHANGE_HA} ha 이고 비율 ≥ {CHANGE_RATIO}",
+            "신호일치_기준": f"AE 임베딩거리·S2-TSFM 은 변화면적 ≥ {CHANGE_HA} ha 이고 비율 ≥ {CHANGE_RATIO}",
             "모델": {"최종지도": json.loads((FM_DIR / "final_report.json").read_text(encoding="utf-8"))["final_map_holdout"],
-                   "Mini-GFM": json.loads((MG_DIR / "report.json").read_text(encoding="utf-8"))["classifier"]["지수+GFM"]},
+                   "S2-TSFM": json.loads((TSFM_DIR / "report.json").read_text(encoding="utf-8"))["classifier"]["지수+GFM"]},
             "신호일치수_분포": units["신호일치수"].value_counts().sort_index().to_dict(),
             "판정_분포": units["판정"].value_counts().to_dict(), "건수": {k: len(v) for k, v in tables.items()}}
     (DB_DIR / "build_meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")

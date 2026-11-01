@@ -127,12 +127,12 @@ const TXT = {
       report: '분석 보고서', show_map: '지도에 표시', print: '인쇄·PDF', rep_empty: "질의를 실행하거나 '보고서' 탭에서 저장된 보고서를 고르면 여기에 표시됩니다.",
       city: '춘천시 전체', cur_bbox: '현재 지도 범위', sel_n: n => `선택 소반 ${n}개`, sel_btn: n => n ? `선택 소반 (${n})` : '선택 소반', unit: id => `소반 ${id}`,
       need_sel: '소반을 Shift+클릭으로 먼저 선택하세요.', loading: '불러오는 중…', llm_on: m => `Claude 연결됨 (${m})`, llm_off: 'LLM 미연결 — 규칙 기반 분석',
-      models: (a, b) => ` · 변화모델: 최종지도(AE+S2) F1 ${a}, Mini-GFM(S2) F1 ${b}`, no_key: 'API 키가 없어 규칙 기반으로 실행됩니다.', rule_ko: '',
+      models: (a, b) => ` · 변화모델: 최종지도(AE+S2) F1 ${a}, S2-TSFM F1 ${b}`, no_key: 'API 키가 없어 규칙 기반으로 실행됩니다.', rule_ko: '',
       err: '오류: ', none: '없음', attr_of: l => `${l} 속성`, b_ts: '시계열·모델 근거', b_ex: '변화 해석', b_sim: '유사 소반', b_area: '대상 지역으로 선택', b_ask: '이 소반 질의',
       ask_q: id => `소반 ${id}의 위성 변화와 사업실적·재해 이력을 대조하고 점검이 필요한지 정리해줘`, explaining: '근거 정리 중…', ex_t: '변화 해석', repeat: ' · 반복 교란',
       obs: '관측', rec: '기록', interp: '해석', chk: '추가 확인', unc: '불확실성', yr: '연도', sim_wait: '유사 소반 검색 중…', sim_t: '임베딩이 비슷한 소반 (비교·검증 후보)',
       sim_note: '관측된 지표 특성의 유사성이며 기후·토양·생태 기능이 같다는 뜻은 아닙니다.', ts_wait: '원자료 읽는 중…', ts_ae: '■ AE 연속연도 거리',
-      ae_peak: 'AE 최대 변화 구간', fm_px: '최종지도 화소', fm_yr: '최종지도 변화연도', fm_p: '최종지도 평균확률', mg_px: 'Mini-GFM 화소', mg_p: 'Mini-GFM 평균확률',
+      ae_peak: 'AE 최대 변화 구간', fm_px: '최종지도 화소', fm_yr: '최종지도 변화연도', fm_p: '최종지도 평균확률', mg_px: 'S2-TSFM 화소', mg_p: 'S2-TSFM 평균확률',
       no_res: '결과 없음', computing: '계산 중…', nf: '국유림 소반 / 면적', ae_ha: 'AlphaEarth 변화면적', s2_ha: 'Sentinel-2 변화면적', dis: '재해 2019~2025',
       ae_yr: 'AE 변화연도별 소반', by_j: '판정별', recs: '사업실적 2019~2025', conv: '산지전용 고시 필지', rank: '점검 우선순위', save_q: a => `${a} 산림변화 현황과 점검 우선순위, 산지전용 필지 정리`,
       no_runs: '저장된 보고서가 없습니다.', res_n: n => `결과 표시 ${n}곳`, clear: '해제', rep_units: '보고서에 나온 소반',
@@ -147,12 +147,12 @@ const TXT = {
       report: 'Analysis report', show_map: 'Show on map', print: 'Print / PDF', rep_empty: 'Run a query or pick a saved report in the Reports tab to show it here.',
       city: 'All of Chuncheon', cur_bbox: 'Current map extent', sel_n: n => `${n} selected stands`, sel_btn: n => n ? `Selected stands (${n})` : 'Selected stands', unit: id => `Stand ${id}`,
       need_sel: 'Shift+click stands first.', loading: 'Loading…', llm_on: m => `Claude connected (${m})`, llm_off: 'No LLM — rule-based analysis',
-      models: (a, b) => ` · change models: final map (AE+S2) F1 ${a}, Mini-GFM (S2) F1 ${b}`, no_key: 'No API key: runs in rule-based mode.', rule_ko: '',
+      models: (a, b) => ` · change models: final map (AE+S2) F1 ${a}, S2-TSFM F1 ${b}`, no_key: 'No API key: runs in rule-based mode.', rule_ko: '',
       err: 'Error: ', none: 'None', attr_of: l => `${l} attributes`, b_ts: 'Time series & model evidence', b_ex: 'Explain change', b_sim: 'Similar stands', b_area: 'Use as target area', b_ask: 'Ask about this stand',
       ask_q: id => `For stand ${id}, compare satellite change with management and disaster records and tell me whether a field inspection is needed.`, explaining: 'Gathering evidence…', ex_t: 'Change explanation', repeat: ' · repeated disturbance',
       obs: 'Observation', rec: 'Records', interp: 'Interpretation', chk: 'Check further', unc: 'Uncertainty', yr: 'Year', sim_wait: 'Searching similar stands…', sim_t: 'Stands with similar embeddings (candidates for comparison)',
       sim_note: 'Similarity of observed surface characteristics; it does not mean the same climate, soil or ecological function.', ts_wait: 'Reading source data…', ts_ae: '■ AE year-to-year distance',
-      ae_peak: 'AE peak change interval', fm_px: 'Final-map pixels', fm_yr: 'Final-map change year', fm_p: 'Final-map mean probability', mg_px: 'Mini-GFM pixels', mg_p: 'Mini-GFM mean probability',
+      ae_peak: 'AE peak change interval', fm_px: 'Final-map pixels', fm_yr: 'Final-map change year', fm_p: 'Final-map mean probability', mg_px: 'S2-TSFM pixels', mg_p: 'S2-TSFM mean probability',
       no_res: 'No results', computing: 'Computing…', nf: 'National-forest stands / area', ae_ha: 'AlphaEarth change area', s2_ha: 'Sentinel-2 change area', dis: 'Disasters 2019–2025',
       ae_yr: 'Stands by AE change year', by_j: 'By judgement', recs: 'Management records 2019–2025', conv: 'Forest conversion notice parcels', rank: 'Inspection priority', save_q: a => `${a} 산림변화 현황과 점검 우선순위, 산지전용 필지 정리`,
       no_runs: 'No saved reports.', res_n: n => `${n} results shown`, clear: 'Clear', rep_units: 'Stands in report',
@@ -173,7 +173,7 @@ const FIELD_EN = {'단위ID': 'Stand ID', '임반': 'Compartment', '소반': 'St
   '실적구분_2020_2025': 'Records 2020–2025', '실적연도': 'Record years', '실적종별': 'Record sub-types', '실적건수': 'Record count', '합의라벨': 'Consensus label', '임상도_변화비율': 'Forest-map change ratio',
   'AE_변화비율': 'AE change ratio', 'AE_변화면적_ha': 'AE change area (ha)', 'AE_변화연도': 'AE change year', 'S2_변화비율': 'S2 change ratio', 'S2_변화면적_ha': 'S2 change area (ha)', 'S2_dNDVI': 'S2 ΔNDVI',
   '경사_도': 'Slope (°)', '표고_m': 'Elevation (m)', '산불_500m_2019_2025': 'Wildfires within 500 m', '산사태_500m_2019_2025': 'Landslides within 500 m', '임도거리_m': 'Forest road distance (m)', '도로거리_m': 'Road distance (m)',
-  'FM_변화면적_ha': 'Final-map change (ha)', 'FM_주변화유형': 'Final-map main change', 'FM_변화연도': 'Final-map change year', 'FM_변화확률': 'Final-map change prob.', 'MG_변화면적_ha': 'Mini-GFM change (ha)',
+  'FM_변화면적_ha': 'Final-map change (ha)', 'FM_주변화유형': 'Final-map main change', 'FM_변화연도': 'Final-map change year', 'FM_변화확률': 'Final-map change prob.', 'MG_변화면적_ha': 'S2-TSFM change (ha)',
   '신호일치수': 'Signal agreement (0–3)', '레코드ID': 'Record ID', '고시번호': 'Notice no.', '고시연도': 'Notice year', '주소': 'Address', '지목': 'Land category', '전용용도': 'Converted use', '해제면적_m2': 'Released area (m²)',
   '라벨': 'Label', '유형': 'Type', '연도': 'Year', '사업구분': 'Project type', '종별': 'Sub-type', '사업비_천원': 'Cost (k KRW)', '소반거리_m': 'Distance to stand (m)', '구분': 'Item',
   '조사연도': 'Survey years', '마지막조사_최근': 'Latest survey', '변화구간': 'Change intervals', '재조사_우선': 'Re-survey reason', 'AE연도별_우세임상': 'AE yearly dominant type',
@@ -319,7 +319,7 @@ async function showTs(layer, fid) {
     nd.forEach((v, i) => { if (v !== null) svg += `<circle cx="${x(i)}" cy="${yN(v)}" r="2.5" fill="#2f6b3a"><title>NDVI ${ys[i]}: ${v}</title></circle>`; });
     ys.forEach((y, i) => svg += `<text x="${x(i)}" y="138" font-size="9" text-anchor="middle" fill="#666">${String(y).slice(2)}</text>`);
     svg += `<text x="4" y="14" font-size="10" fill="#2f6b3a">— NDVI(S2)</text><text x="80" y="14" font-size="10" fill="#7b2cbf">${t('ts_ae')}</text></svg>`;
-    const fm = r['최종지도(AE+S2)'], mg = r['Mini-GFM(S2)'];
+    const fm = r['최종지도(AE+S2)'], mg = r['S2-TSFM'];
     const js = o => esc(JSON.stringify(Object.fromEntries(Object.entries(o).map(([k, v]) => [tv(k), v]))));
     $('#ts').innerHTML = svg + `<table class="kv">
       <tr><td>${t('ae_peak')}</td><td>${esc(r['AlphaEarth_최대변화구간'])} (2019→2025: ${fmt(r['AlphaEarth_2019→2025_거리'])})</td></tr>
@@ -366,7 +366,7 @@ const EX = {ko: ['춘천 국유림의 2020~2024년 산림변화 중 경영실적
   'AlphaEarth 분류모델로 본 북산면 국유림의 2019→2025 피복·임상 변화와, 임상 재판독 후보·산지 내 시설·나지 확대 의심 소반을 정리해줘',
   '2019~2025년 국유림에서 큰 변화 후 식생 회복이 더딘 소반을 찾고, 벌채·조림 이력과 비교해 현장 점검 소반을 추천해줘', '회복이 양호한 벌채지와 임베딩이 비슷한 소반을 찾아 경사·수종 차이와 함께 비교조사 후보를 정리해줘',
   '위성 변화는 있는데 2025 임상도에 반영되지 않은 임상도 갱신 검토 소반과 변화 구역 면적표를 정리해줘', '반복 교란 소반과 수분 스트레스 등 식생 이상 의심 소반을 찾아 변화의 의미를 설명해줘',
-  '변화탐지 모델(최종지도·Mini-GFM)과 AlphaEarth·Sentinel-2 원자료가 함께 변화를 가리키는 소반과, 한 신호만 변화로 본 불확실한 소반을 구분해줘', '산지전용 고시 필지 중 위성에서 변화가 확인되는 곳은?',
+  '변화탐지 모델(최종지도·S2-TSFM)과 AlphaEarth·Sentinel-2 원자료가 함께 변화를 가리키는 소반과, 한 신호만 변화로 본 불확실한 소반을 구분해줘', '산지전용 고시 필지 중 위성에서 변화가 확인되는 곳은?',
   'AlphaEarth가 Sentinel-2보다 변화 탐지에 도움이 되는가?', '수확 실적이 있는데 변화가 관측되지 않은 소반(이행 확인 대상)은?'],
  en: ['For 2020–2024 forest change in the Chuncheon national forest, find stands where management records and satellite analysis disagree. Separate stands with detected change but no records from stands with records but weak change signals. Show forest-map change, disaster history, slope and forest-road access, and list the top 10 field-inspection candidates with reasons and uncertainty as a map and table.',
   'Where are stands with concentrated satellite change but no management records?', 'Using forest-map survey history and yearly forest-type estimates, rank stands in Dong-myeon national forest for forest-map re-survey.',
@@ -502,7 +502,7 @@ $('#status').textContent = t('loading');
 (async () => {
   meta = await api('/api/meta');
   meta.emd.forEach(e => $('#emdSel').insertAdjacentHTML('beforeend', `<option>${esc(e)}</option>`));
-  $('#status').textContent = (meta.llm ? t('llm_on')(meta.model) : t('llm_off')) + t('models')(meta.models['최종지도(AE+S2)'], meta.models['Mini-GFM(S2)']);
+  $('#status').textContent = (meta.llm ? t('llm_on')(meta.model) : t('llm_off')) + t('models')(meta.models['최종지도(AE+S2)'], meta.models['S2-TSFM']);
   $('#modeNote').textContent = (meta.llm ? '' : t('no_key')) + t('rule_ko');
   await loadLayers();
   window.__ready = true;

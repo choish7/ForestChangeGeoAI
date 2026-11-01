@@ -1,0 +1,226 @@
+{
+  "model": "AlphaEarth V1 annual embedding",
+  "period": "P2",
+  "years": [
+    2019,
+    2025
+  ],
+  "unsupervised_scores": [
+    {
+      "task": "임상도 변화여부(벌채·전용·증가 vs 무변화)",
+      "score": "AE 구간 첫해→끝해 코사인거리",
+      "n_pos": 16409,
+      "n_neg": 634718,
+      "auroc": 0.961,
+      "ap": 0.7088
+    },
+    {
+      "task": "임상도 변화여부(벌채·전용·증가 vs 무변화)",
+      "score": "AE 구간 최대 연속 코사인거리",
+      "n_pos": 16409,
+      "n_neg": 634718,
+      "auroc": 0.9499,
+      "ap": 0.712
+    },
+    {
+      "task": "국유림 검증라벨 변화여부(실적·임상도 합의)",
+      "score": "AE 구간 첫해→끝해 코사인거리",
+      "n_pos": 2882,
+      "n_neg": 103305,
+      "auroc": 0.9978,
+      "ap": 0.9663
+    },
+    {
+      "task": "국유림 검증라벨 변화여부(실적·임상도 합의)",
+      "score": "AE 구간 최대 연속 코사인거리",
+      "n_pos": 2882,
+      "n_neg": 103305,
+      "auroc": 0.9957,
+      "ap": 0.9729
+    },
+    {
+      "task": "임상도 벌채·갱신 vs 무변화",
+      "score": "AE 구간 첫해→끝해 코사인거리",
+      "n_pos": 10507,
+      "n_neg": 634718,
+      "auroc": 0.9944,
+      "ap": 0.8455
+    },
+    {
+      "task": "임상도 벌채·갱신 vs 무변화",
+      "score": "AE 구간 최대 연속 코사인거리",
+      "n_pos": 10507,
+      "n_neg": 634718,
+      "auroc": 0.9941,
+      "ap": 0.8847
+    },
+    {
+      "task": "국유림 실적 수확·갱신 vs 실적없음",
+      "score": "AE 구간 첫해→끝해 코사인거리",
+      "n_pos": 19890,
+      "n_neg": 181719,
+      "auroc": 0.6921,
+      "ap": 0.4809
+    },
+    {
+      "task": "국유림 실적 수확·갱신 vs 실적없음",
+      "score": "AE 구간 최대 연속 코사인거리",
+      "n_pos": 19890,
+      "n_neg": 181719,
+      "auroc": 0.7137,
+      "ap": 0.5127
+    },
+    {
+      "task": "국유림 실적 솎아베기 vs 실적없음",
+      "score": "AE 구간 첫해→끝해 코사인거리",
+      "n_pos": 23200,
+      "n_neg": 181719,
+      "auroc": 0.7158,
+      "ap": 0.347
+    },
+    {
+      "task": "국유림 실적 솎아베기 vs 실적없음",
+      "score": "AE 구간 최대 연속 코사인거리",
+      "n_pos": 23200,
+      "n_neg": 181719,
+      "auroc": 0.6026,
+      "ap": 0.1499
+    }
+  ],
+  "classifier": {
+    "AE": {
+      "n_train": 136462,
+      "n_test": 651127,
+      "balanced_accuracy": 0.6932,
+      "macro_f1": 0.5781,
+      "changed_auroc": 0.9909,
+      "changed_ap": 0.8714,
+      "verified_changed_auroc": 0.9996,
+      "verified_changed_ap": 0.9927,
+      "n_test_verified": 106187,
+      "per_class": {
+        "no_change": {
+          "precision": 0.9961,
+          "recall": 0.9866,
+          "f1-score": 0.9914,
+          "support": 634718.0
+        },
+        "harvest": {
+          "precision": 0.7098,
+          "recall": 0.9629,
+          "f1-score": 0.8172,
+          "support": 10507.0
+        },
+        "conversion": {
+          "precision": 0.1008,
+          "recall": 0.4732,
+          "f1-score": 0.1662,
+          "support": 522.0
+        },
+        "gain": {
+          "precision": 0.3265,
+          "recall": 0.35,
+          "f1-score": 0.3378,
+          "support": 5380.0
+        }
+      },
+      "n_features": 202
+    },
+    "AE+S2지수": {
+      "n_train": 136462,
+      "n_test": 651127,
+      "balanced_accuracy": 0.7201,
+      "macro_f1": 0.5853,
+      "changed_auroc": 0.9918,
+      "changed_ap": 0.8792,
+      "verified_changed_auroc": 0.9995,
+      "verified_changed_ap": 0.9934,
+      "n_test_verified": 106187,
+      "per_class": {
+        "no_change": {
+          "precision": 0.9965,
+          "recall": 0.9861,
+          "f1-score": 0.9912,
+          "support": 634718.0
+        },
+        "harvest": {
+          "precision": 0.7189,
+          "recall": 0.963,
+          "f1-score": 0.8232,
+          "support": 10507.0
+        },
+        "conversion": {
+          "precision": 0.0957,
+          "recall": 0.5479,
+          "f1-score": 0.1629,
+          "support": 522.0
+        },
+        "gain": {
+          "precision": 0.346,
+          "recall": 0.3833,
+          "f1-score": 0.3637,
+          "support": 5380.0
+        }
+      },
+      "n_features": 250
+    },
+    "S2지수(10m 대응)": {
+      "n_train": 136462,
+      "n_test": 651127,
+      "balanced_accuracy": 0.6832,
+      "macro_f1": 0.518,
+      "changed_auroc": 0.9757,
+      "changed_ap": 0.8197,
+      "verified_changed_auroc": 0.997,
+      "verified_changed_ap": 0.9758,
+      "n_test_verified": 106187,
+      "per_class": {
+        "no_change": {
+          "precision": 0.9962,
+          "recall": 0.9717,
+          "f1-score": 0.9838,
+          "support": 634718.0
+        },
+        "harvest": {
+          "precision": 0.5453,
+          "recall": 0.94,
+          "f1-score": 0.6902,
+          "support": 10507.0
+        },
+        "conversion": {
+          "precision": 0.0468,
+          "recall": 0.3812,
+          "f1-score": 0.0834,
+          "support": 522.0
+        },
+        "gain": {
+          "precision": 0.245,
+          "recall": 0.4398,
+          "f1-score": 0.3147,
+          "support": 5380.0
+        }
+      },
+      "n_features": 48
+    }
+  },
+  "change_year": {
+    "n": 16404,
+    "exact": 0.0715,
+    "within_1yr": 0.3363
+  },
+  "class_area_ha": {
+    "no_change": 99832.8,
+    "harvest": 4664.1,
+    "conversion": 4569.0,
+    "gain": 2605.6
+  },
+  "elapsed_min": 115.8,
+  "note": "춘천 경계 밖 0벡터 화소 제외 후 면적 (분류기 지표는 경계 안 라벨 화소만 사용해 영향 없음)",
+  "class_area_ha_forestmask": {
+    "no_change": 79914.8,
+    "harvest": 2626.9,
+    "conversion": 1112.8,
+    "gain": 1385.1
+  },
+  "forestmask": "임상도 2019 또는 2025 임지(입목지·무립목지) 화소만 — 두 시기 모두 비산림·도화범위 밖 제외"
+}

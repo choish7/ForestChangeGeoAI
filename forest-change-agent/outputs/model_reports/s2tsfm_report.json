@@ -1,0 +1,295 @@
+{
+  "input": "Chuncheon_S2_2019_2025_42Bands.tif",
+  "years": [
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "pretrain": {
+    "epoch": 30,
+    "train_mae": 0.07205608662217855,
+    "val_mae": 0.07465572282671928
+  },
+  "unsupervised_scores": [
+    {
+      "task": "임상도 변화여부(벌채·전용·증가 vs 무변화)",
+      "score": "GFM emb_first_last",
+      "n_pos": 4648,
+      "n_neg": 169211,
+      "prevalence": 0.0267,
+      "auroc": 0.8685,
+      "ap": 0.3665
+    },
+    {
+      "task": "임상도 변화여부(벌채·전용·증가 vs 무변화)",
+      "score": "GFM emb_max_consec",
+      "n_pos": 4648,
+      "n_neg": 169211,
+      "prevalence": 0.0267,
+      "auroc": 0.8521,
+      "ap": 0.4914
+    },
+    {
+      "task": "임상도 변화여부(벌채·전용·증가 vs 무변화)",
+      "score": "지수 |ΔNDVI|",
+      "n_pos": 4648,
+      "n_neg": 169211,
+      "prevalence": 0.0267,
+      "auroc": 0.801,
+      "ap": 0.3054
+    },
+    {
+      "task": "임상도 변화여부(벌채·전용·증가 vs 무변화)",
+      "score": "지수 −ΔNDVI",
+      "n_pos": 4648,
+      "n_neg": 169211,
+      "prevalence": 0.0267,
+      "auroc": 0.5335,
+      "ap": 0.2174
+    },
+    {
+      "task": "임상도 변화여부(벌채·전용·증가 vs 무변화)",
+      "score": "지수 최대 NDVI 감소",
+      "n_pos": 4648,
+      "n_neg": 169211,
+      "prevalence": 0.0267,
+      "auroc": 0.7894,
+      "ap": 0.4541
+    },
+    {
+      "task": "임상도 벌채·갱신 vs 무변화",
+      "score": "GFM emb_first_last",
+      "n_pos": 2804,
+      "n_neg": 169211,
+      "prevalence": 0.0163,
+      "auroc": 0.884,
+      "ap": 0.3616
+    },
+    {
+      "task": "임상도 벌채·갱신 vs 무변화",
+      "score": "GFM emb_max_consec",
+      "n_pos": 2804,
+      "n_neg": 169211,
+      "prevalence": 0.0163,
+      "auroc": 0.9674,
+      "ap": 0.6701
+    },
+    {
+      "task": "임상도 벌채·갱신 vs 무변화",
+      "score": "지수 |ΔNDVI|",
+      "n_pos": 2804,
+      "n_neg": 169211,
+      "prevalence": 0.0163,
+      "auroc": 0.7835,
+      "ap": 0.2571
+    },
+    {
+      "task": "임상도 벌채·갱신 vs 무변화",
+      "score": "지수 −ΔNDVI",
+      "n_pos": 2804,
+      "n_neg": 169211,
+      "prevalence": 0.0163,
+      "auroc": 0.755,
+      "ap": 0.3198
+    },
+    {
+      "task": "임상도 벌채·갱신 vs 무변화",
+      "score": "지수 최대 NDVI 감소",
+      "n_pos": 2804,
+      "n_neg": 169211,
+      "prevalence": 0.0163,
+      "auroc": 0.9456,
+      "ap": 0.6676
+    },
+    {
+      "task": "국유림 실적 수확·갱신 vs 실적없음",
+      "score": "GFM emb_first_last",
+      "n_pos": 5303,
+      "n_neg": 39282,
+      "prevalence": 0.1189,
+      "auroc": 0.7514,
+      "ap": 0.397
+    },
+    {
+      "task": "국유림 실적 수확·갱신 vs 실적없음",
+      "score": "GFM emb_max_consec",
+      "n_pos": 5303,
+      "n_neg": 39282,
+      "prevalence": 0.1189,
+      "auroc": 0.6499,
+      "ap": 0.3862
+    },
+    {
+      "task": "국유림 실적 수확·갱신 vs 실적없음",
+      "score": "지수 |ΔNDVI|",
+      "n_pos": 5303,
+      "n_neg": 39282,
+      "prevalence": 0.1189,
+      "auroc": 0.5404,
+      "ap": 0.2187
+    },
+    {
+      "task": "국유림 실적 수확·갱신 vs 실적없음",
+      "score": "지수 −ΔNDVI",
+      "n_pos": 5303,
+      "n_neg": 39282,
+      "prevalence": 0.1189,
+      "auroc": 0.7129,
+      "ap": 0.3518
+    },
+    {
+      "task": "국유림 실적 수확·갱신 vs 실적없음",
+      "score": "지수 최대 NDVI 감소",
+      "n_pos": 5303,
+      "n_neg": 39282,
+      "prevalence": 0.1189,
+      "auroc": 0.6772,
+      "ap": 0.4139
+    },
+    {
+      "task": "국유림 실적 솎아베기 vs 실적없음",
+      "score": "GFM emb_first_last",
+      "n_pos": 5568,
+      "n_neg": 39282,
+      "prevalence": 0.1241,
+      "auroc": 0.7535,
+      "ap": 0.465
+    },
+    {
+      "task": "국유림 실적 솎아베기 vs 실적없음",
+      "score": "GFM emb_max_consec",
+      "n_pos": 5568,
+      "n_neg": 39282,
+      "prevalence": 0.1241,
+      "auroc": 0.5403,
+      "ap": 0.1542
+    },
+    {
+      "task": "국유림 실적 솎아베기 vs 실적없음",
+      "score": "지수 |ΔNDVI|",
+      "n_pos": 5568,
+      "n_neg": 39282,
+      "prevalence": 0.1241,
+      "auroc": 0.6304,
+      "ap": 0.3231
+    },
+    {
+      "task": "국유림 실적 솎아베기 vs 실적없음",
+      "score": "지수 −ΔNDVI",
+      "n_pos": 5568,
+      "n_neg": 39282,
+      "prevalence": 0.1241,
+      "auroc": 0.4084,
+      "ap": 0.1144
+    },
+    {
+      "task": "국유림 실적 솎아베기 vs 실적없음",
+      "score": "지수 최대 NDVI 감소",
+      "n_pos": 5568,
+      "n_neg": 39282,
+      "prevalence": 0.1241,
+      "auroc": 0.4916,
+      "ap": 0.1173
+    }
+  ],
+  "classifier": {
+    "지수만": {
+      "n_train": 83526,
+      "n_test": 173859,
+      "balanced_accuracy": 0.7333,
+      "macro_f1": 0.5014,
+      "changed_auroc": 0.9625,
+      "changed_ap": 0.7889,
+      "per_class": {
+        "no_change": {
+          "precision": 0.9962,
+          "recall": 0.9533,
+          "f1-score": 0.9743,
+          "support": 169211.0
+        },
+        "harvest": {
+          "precision": 0.5496,
+          "recall": 0.9165,
+          "f1-score": 0.6872,
+          "support": 2804.0
+        },
+        "conversion": {
+          "precision": 0.0517,
+          "recall": 0.5161,
+          "f1-score": 0.094,
+          "support": 155.0
+        },
+        "gain": {
+          "precision": 0.1621,
+          "recall": 0.5471,
+          "f1-score": 0.2501,
+          "support": 1689.0
+        }
+      },
+      "n_features": 38
+    },
+    "지수+GFM": {
+      "n_train": 83526,
+      "n_test": 173859,
+      "balanced_accuracy": 0.7352,
+      "macro_f1": 0.5352,
+      "changed_auroc": 0.9679,
+      "changed_ap": 0.8064,
+      "per_class": {
+        "no_change": {
+          "precision": 0.9963,
+          "recall": 0.9666,
+          "f1-score": 0.9812,
+          "support": 169211.0
+        },
+        "harvest": {
+          "precision": 0.5652,
+          "recall": 0.9262,
+          "f1-score": 0.702,
+          "support": 2804.0
+        },
+        "conversion": {
+          "precision": 0.0729,
+          "recall": 0.4839,
+          "f1-score": 0.1267,
+          "support": 155.0
+        },
+        "gain": {
+          "precision": 0.2343,
+          "recall": 0.5642,
+          "f1-score": 0.3311,
+          "support": 1689.0
+        }
+      },
+      "n_features": 70
+    }
+  },
+  "change_year": {
+    "n": 4645,
+    "emb_max_year": {
+      "exact": 0.0887,
+      "within_1yr": 0.3524
+    },
+    "ndvi_drop_year": {
+      "exact": 0.1557,
+      "within_1yr": 0.2837
+    }
+  },
+  "mgmt_agreement_pred_changed_share": {
+    "수확·갱신 실적 소반": 0.2361,
+    "솎아베기 실적 소반": 0.1048,
+    "기타(시설·소득·피해복구) 실적 소반": 0.0384,
+    "실적 없는 소반": 0.0201
+  },
+  "class_area_ha": {
+    "no_change": 92556.6,
+    "harvest": 5148.1,
+    "conversion": 9840.6,
+    "gain": 4264.2
+  },
+  "elapsed_min": 15.1
+}

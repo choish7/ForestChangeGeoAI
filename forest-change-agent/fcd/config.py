@@ -8,20 +8,20 @@ import os
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]           # forest-change-agent/
-DATA = Path(os.environ.get("FCD_DATA_DIR", ROOT.parent / "data"))   # 원자료 폴더 (docs/DATA.md 참고)
+DATA = Path(os.environ.get("FCD_DATA_DIR", ROOT / "data"))          # 원자료 폴더 (data/README.md 참고)
 WORK = ROOT / "work"                                 # 중간 산출물
 OUT = ROOT / "outputs"                               # 모형·지표·의사결정 카드
 for d in (WORK, OUT):
     d.mkdir(exist_ok=True)
 
-# ---- 원자료 (임상도 2019 은 zip 을 GDAL /vsizip 으로 직접 읽음)
+# ---- 원자료 (data/ 에 원래 이름 그대로 둠)
 FOREST_MAP = {
-    2019: f"/vsizip/{(DATA / '임상도 2019 51110.zip').as_posix()}/51110.shp",
+    2019: (DATA / "임상도 2019 51110" / "51110.shp").as_posix(),
     2025: (DATA / "임상도 2025 51110" / "51110.shp").as_posix(),
 }
-FOREST_FUNCTION = DATA / "산림기능구분도 51110" / "51110.shp"
-MGMT_PLAN_DIR = DATA / "북부지방산림청" / "북부지방산림청"
-MGMT_PLAN_GLOB = "춘천*/*.shp"                        # 춘천국유림관리소 경영계획부(9차) 소반도
+FOREST_FUNCTION = DATA / "산림기능구분도 51110" / "51110.shp"   # 미사용 (자료 없음)
+MGMT_PLAN_DIR = DATA
+MGMT_PLAN_GLOB = "춘천(9)*/*.shp"                     # 춘천국유림관리소 경영계획부(9차) 소반도
 
 # ---- 중간 산출물
 CHANGE_POLYGONS = WORK / "change_polygons.parquet"   # 임상도 2019×2025 중첩 + 변화 라벨

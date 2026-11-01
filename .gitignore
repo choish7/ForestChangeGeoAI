@@ -3,22 +3,32 @@ claude_key.txt
 *.env
 .env
 
-# raw / restricted data (see docs/DATA.md)
-data/
+# raw data (download sources: forest-change-agent/data/README.md) — never commit
+forest-change-agent/data/*
+!forest-change-agent/data/README.md
+
+# derived data rebuilt locally (large, or derived from non-public / internal data)
 output/
-*임상도*/
-*경영계획부*
-*임소반*
-LSMD_*/
 forest-change-agent/work/change_polygons.parquet
 forest-change-agent/work/regions.parquet
-paper/revision/inje/inje_change_polygons.parquet
-paper/revision/inje/inje_events.parquet
-paper/revision/inje/payload_*.txt
+forest-change-agent/work/inje/inje_change_polygons.parquet
+forest-change-agent/work/inje/inje_events.parquet
+forest-change-agent/work/inje/payload_*.txt
+forest-change-agent/models/s2_tsfm_chuncheon/change_scores.tif
+forest-change-agent/models/s2_tsfm_chuncheon/change_prob.tif
+forest-change-agent/release_preprocessed/02_임상도_변화라벨/*.gpkg
+forest-change-agent/outputs/results/E5b_harvest_timing.csv
+forest-change-agent/outputs/results/E7_ranking.json
+forest-change-agent/outputs/results/run.log
+forest-change-agent/outputs/model_reports/decision_db_build_meta.json
 
-# run artefacts
+# decision-support service: runtime data (evidence DB, rasters) and run records
+forest_decision_agent/data/
 forest_decision_agent/outputs/
 forest-change-agent/outputs/cards/
+
+# python / tools
 __pycache__/
 *.pyc
 *.tif.aux.xml
+.ipynb_checkpoints/

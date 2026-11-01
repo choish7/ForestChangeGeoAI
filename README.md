@@ -1,50 +1,59 @@
 # ForestChangeGeoAI
 
-Code, derived data and trained models for **"Integrating AlphaEarth Satellite Embeddings and Natural Language GeoAI for Traceable Forest Change Monitoring in South Korea"** (Choi & Jung, *Remote Sensing*, under revision).
+This repository holds the code, distributable derived data and trained models for **"Integrating AlphaEarth Satellite Embeddings and Natural Language GeoAI for Traceable Forest Change Monitoring in South Korea"** (Choi & Jung, *Remote Sensing*, under revision).
 
-The project evaluates annual [AlphaEarth Foundations](https://developers.google.com/earth-engine/datasets/catalog/GOOGLE_SATELLITE_EMBEDDING_V1_ANNUAL) satellite embeddings against forest-map change labels in Chuncheon, Korea. It then exposes the analysis through tool-based GeoAI that checks every reported number against tool outputs. A transfer test in Inje County checks how the approach carries over to another region.
+The study evaluates annual [AlphaEarth Foundations](https://developers.google.com/earth-engine/datasets/catalog/GOOGLE_SATELLITE_EMBEDDING_V1_ANNUAL) satellite embeddings against forest-map change labels in Chuncheon, Korea. The results are delivered through a tool-based GeoAI agent and a decision-support web service, both of which check every reported number against tool outputs. A transfer test in Inje County checks how the approach carries over to another region.
 
-| Component | Folder | What it does |
+| Folder | Contents |
+|---|---|
+| [`forest-change-agent/`](forest-change-agent/) | Benchmark and full experiment pipeline. The 15 steps in paper order are in [`EXPERIMENTS.md`](forest-change-agent/EXPERIMENTS.md); see also the folder [`README.md`](forest-change-agent/README.md) |
+| [`forest_decision_agent/`](forest_decision_agent/) | Decision-support web service (FastAPI + Leaflet; Korean/English UI; Claude agent or rule-based mode). See its [`README.md`](forest_decision_agent/README.md), which includes an English summary |
+
+`MANIFEST.csv` lists every file with its size and SHA-256 checksum.
+
+## What is included
+
+| Type | Files |
+|---|---|
+| Source code | `forest-change-agent/fcd/` (shared modules), `scripts/` (experiments 01–13), `prep/` (data preparation), `colab/` (step-numbered Colab notebooks and modules); `forest_decision_agent/*.py`, `static/index.html` |
+| Documents | `forest-change-agent/README.md`, `EXPERIMENTS.md`, `data/README.md` (raw-data sources); `forest_decision_agent/README.md` |
+| Sample data | `forest-change-agent/work/samples.parquet` and `features.parquet` (6,027 Chuncheon points with labels and GEE features); `work/inje/inje_samples.parquet` (2,100 Inje points) |
+| Preprocessed data | `forest-change-agent/release_preprocessed/` (boundaries, conversion-notice parcels and labels, forest masks, thinning sites). Non-public layers and columns are removed; see its `README.md` |
+| Models | `forest-change-agent/outputs/change_model.joblib` (benchmark classifier), `models/ae_class_models/*_local.joblib` (AlphaEarth classifiers), `models/s2_tsfm_chuncheon/` (S2-TSFM weights and classifier) |
+| Results | `forest-change-agent/outputs/metrics.json`, `ablation.csv`, `results/` (experiments E1–E10), `model_reports/`, `inje_visual_check/` (blind visual-interpretation sheet) |
+
+## What is not included
+
+| Data | Why | Where to get it |
 |---|---|---|
-| Change benchmark | `forest-change-agent/` | Forest-map transition labels → stratified samples → GEE features (AlphaEarth, Sentinel-2, terrain) → gradient boosting with 5 km spatial blocks; Gemini/Claude tool agent with numeric checks |
-| Data preparation | `scripts/` | GEE exports, label rasters, yearly forest-type labels, management records, fire/landslide layers |
-| Sentinel-2 foundation baseline | `mini_gfm/`, `mini_gfm_chuncheon/` | Mini-GFM masked autoencoder on Sentinel-2 time series; change classifier |
-| Final change map | `final_change_2019_2025/` | AlphaEarth + Sentinel-2 change map 2019–2025 (class, year, patches) |
-| AlphaEarth classifiers | `ae_class_models/` | Land cover, forest type and change type models trained from forest-map attributes |
-| Decision-support service | `forest_decision_agent/` | FastAPI + Leaflet web app (Korean/English), Claude agent or rule-based mode, traceable reports |
-| Revision experiments | `paper/revision/` | Reviewer-response experiments E1–E10 including the Inje transfer test and visual-check sheet |
-| Docs | `docs/` | Data sources and access, regional extension guide (Korean) |
+| Raw public data: forest type maps, cadastral map, township boundaries, thinning sites, conversion notices | Downloadable from official portals | Download links in [`forest-change-agent/data/README.md`](forest-change-agent/data/README.md) |
+| Satellite data: AlphaEarth, Sentinel-2, SRTM / Copernicus DEM, ESA WorldCover | Public via Google Earth Engine; large | Export with `forest-change-agent/colab/01_위성래스터_내보내기.ipynb` (dataset IDs in `data/README.md`) |
+| National-forest management plans and stand maps, and everything derived from them | Non-public (Northern Regional Forest Service) | On request to the data provider |
+| Wildfire and landslide reports, forest roads | Internal data | — |
+| Large derived files (> 10 MB): change-label polygons, S2-TSFM score and probability rasters, 2013–2025 change-label gpkg | Size; can be regenerated | `scripts/01_build_change_labels.py`, `prep/build_change_labels_2013_2019_2025.py`, `colab/05_S2-TSFM_사전학습.ipynb` |
+| Decision-support evidence DB and runtime rasters (`forest_decision_agent/data/`), query records | Contain non-public and internal data | Build them with the steps in `forest_decision_agent/README.md` |
+
+Because of these exclusions, the web service does not run straight from this repository. It needs the evidence DB, which is built from the raw data (including the management plan, used with the provider's permission).
 
 ## Setup
 
 ```bash
 pip install -r requirements.txt
-earthengine authenticate          # Google Earth Engine account and a cloud project are required
-set GEE_PROJECT=<your-project>    # default in code: ee-choish7838
-set FCD_DATA_DIR=<folder with raw forest maps>   # see docs/DATA.md
+earthengine authenticate              # Google Earth Engine account and cloud project
+set GEE_PROJECT=<your-project>        # default in code: ee-choish7838
+set FCD_DATA_DIR=<raw-data folder>    # default: forest-change-agent/data/
 ```
 
-Raw forest type maps, national-forest management plans and administrative boundaries are **not** redistributed here; `docs/DATA.md` explains how to obtain them and which results can be reproduced without them.
+## Quick check without raw data
 
-## Sample data
-
-The repository includes the sample-level data needed to rerun the classification benchmark without Earth Engine or raw maps.
-
-| File | Rows | Content |
-|---|---|---|
-| `forest-change-agent/work/samples.parquet` | 6,027 | Chuncheon points: `change_type` (no_change / harvest / conversion / gain), 2019 forest attributes, `block_id` (5 km), `split` (train / test_spatial), `lon`, `lat` |
-| `forest-change-agent/work/features.parquet` | 6,027 | Same points with GEE values: `ae{2017..2025}_A00..A63` (AlphaEarth), `ndvi2019`, `ndvi2025`, `nbr2019`, `nbr2025`, `elev`, `slope` |
-| `paper/revision/inje/inje_samples.parquet` | 2,100 | Inje County transfer-test points (same label rules) |
-| `paper/revision/inje/visual_check/checklist_blind.csv` | 100 | Blind visual-interpretation sheet; `answer_key.csv` holds map labels and model predictions |
-
-Quick check (about one minute; reproduces the hold-out F1 values of Table 4):
+This snippet reproduces the hold-out F1 values of Table 5 from the included sample features in about one minute:
 
 ```python
 import sys, pandas as pd
 from sklearn.metrics import f1_score
+from sklearn.ensemble import HistGradientBoostingClassifier
 sys.path.insert(0, "forest-change-agent")
 from fcd import features
-from sklearn.ensemble import HistGradientBoostingClassifier
 
 df = pd.read_parquet("forest-change-agent/work/features.parquet")
 df = df[df.change_type.isin(["no_change", "harvest", "conversion", "gain"])].reset_index(drop=True)
@@ -57,36 +66,24 @@ for name in (["AE"], ["S2"], ["AE", "S2", "TERR"]):
     print("+".join(name), round(f1_score(y[te], m.predict(X.loc[te, cols])), 3))   # AE 0.933, S2 0.772, AE+S2+TERR 0.936
 ```
 
-## Reproducing the paper
+## Main results
 
-| Paper item | Script | Needs raw data? |
-|---|---|---|
-| Table 2 (transition classes), Fig. 2 | `forest-change-agent/scripts/01_build_change_labels.py`, `02_sample_points.py` | Forest maps |
-| Table 4, Fig. 3–5 (feature comparison, confusion, embedding peaks) | `forest-change-agent/scripts/04_train_evaluate.py` | No — uses `forest-change-agent/work/features.parquet` |
-| GEE feature extraction | `forest-change-agent/scripts/03_extract_gee_features.py` | GEE only |
-| Hotspots, compartment ranking (Table 5, Fig. 6) | `forest-change-agent/fcd/spatial.py`, `fcd/tools.py` | Forest maps, management plan |
-| Agent demonstration (Section 4.6, Table 6) | `forest-change-agent/scripts/05_run_agent.py` | All of the above + LLM key |
-| E1–E6 fair comparison, polygon overlap, fold composition, false negatives by type, excluded classes | `paper/revision/revision_experiments.py` | Features parquet (E1–E4); forest maps (E6) |
-| E5b/E5c timing against dated records | `paper/revision/revision_timing.py` | Management records (E5b), conversion notices (E5c) |
-| E7 composite vs. area ranking | `paper/revision/revision_e7.py` | Management plan |
-| E8 report checks | `paper/revision/revision_report_check.py` | Saved service runs |
-| E9 hotspot sensitivity | `paper/revision/revision_hotspot.py` | Forest maps, management plan |
-| E10 Inje transfer | `paper/revision/inje_prepare.py` → `inje_transfer_colab.py` → `inje_visual_check.py` | Inje forest maps (GEE for features) |
+All figures below are F1 scores for change detection on the 1,084-point spatial-block hold-out unless stated otherwise.
 
-Results of each experiment are stored in `paper/revision/results/`. `MANIFEST.csv` lists every file with its SHA-256 checksum.
+| Comparison | F1 |
+|---|---|
+| AlphaEarth features | 0.933 |
+| Two-date Sentinel-2 indices | 0.772 |
+| AlphaEarth, two endpoint years only | 0.926 |
+| Annual Sentinel-2 indices (2019–2025) | 0.887 |
+| Annual Sentinel-2 indices + S2-TSFM | 0.896 |
 
-Main results on the 1,084-point spatial-block hold-out: AlphaEarth features F1 = 0.933, two-date Sentinel-2 indices F1 = 0.772, and annual Sentinel-2 indices (2019–2025) F1 = 0.887. AlphaEarth with only the two endpoint years reaches F1 = 0.926. Without retraining, the Chuncheon model reaches F1 = 0.823 (AlphaEarth + Sentinel-2) in Inje County, or 0.861 after threshold recalibration.
-
-## Decision-support web service
-
-```bash
-python -m forest_decision_agent.web     # http://127.0.0.1:8800  (add ?lang=en for English)
-```
-
-The service needs the evidence database built by `forest_decision_agent/build_*.py` from the raw data (see `forest_decision_agent/README.md`). Put a Claude API key in `forest_decision_agent/claude_key.txt` or `ANTHROPIC_API_KEY` for agent mode; without a key the service runs in rule-based mode. Screenshots are in `forest_decision_agent/docs/screens/`.
+- **Change type**: conditional change-type macro-F1 is 0.777; conversion is the hardest class (F1 = 0.621).
+- **Inje transfer**: without retraining, the Chuncheon AE+S2 model reaches F1 = 0.823 in Inje County, and 0.861 after threshold calibration.
+- **Report checks**: across 14 saved decision-support reports, all 973 checked numerical tokens matched tool outputs.
 
 ## Notes
 
-- Generative AI (Claude Code, ChatGPT) assisted with code writing, debugging and documentation; all reported numbers come from the deterministic scripts above.
+- Generative AI (Claude Code, ChatGPT) assisted with code writing, debugging and documentation. All reported numbers come from the deterministic scripts in this repository.
 - License: to be decided by the authors before public release.
 - Contact: Sin-Hyung Choi (University of Seoul / Korea Forest Service).

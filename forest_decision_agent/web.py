@@ -73,7 +73,7 @@ def meta():
     emd = sorted(T._layer("읍면동경계")["EMD_NM"])
     return {"llm": bool(A.api_key()), "model": A.MODEL,
             "models": {"최종지도(AE+S2)": m.get("모델", {}).get("최종지도", {}).get("macro_f1"),
-                       "Mini-GFM(S2)": m.get("모델", {}).get("Mini-GFM", {}).get("macro_f1")}, "emd": emd, "판정": list(m["판정_분포"]), "판정_분포": m["판정_분포"],
+                       "S2-TSFM": m.get("모델", {}).get("S2-TSFM", {}).get("macro_f1")}, "emd": emd, "판정": list(m["판정_분포"]), "판정_분포": m["판정_분포"],
             "임계값": m["임계값"], "기준": m.get("변화관측_기준"), "출처": T.SOURCES, "한계": T.LIMITS}
 
 

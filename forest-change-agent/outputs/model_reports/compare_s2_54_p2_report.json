@@ -1,0 +1,355 @@
+{
+  "input": "Chuncheon_S2_2017_2025_54Bands.tif",
+  "years": [
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "pretrain": {
+    "epoch": 30,
+    "train_mae": 0.07440771020948887,
+    "val_mae": 0.08060789108276367
+  },
+  "unsupervised_scores": [
+    {
+      "task": "임상도 변화여부(벌채·전용·증가 vs 무변화)",
+      "score": "GFM emb_first_last",
+      "n_pos": 4131,
+      "n_neg": 158689,
+      "prevalence": 0.0254,
+      "auroc": 0.8066,
+      "ap": 0.1948
+    },
+    {
+      "task": "임상도 변화여부(벌채·전용·증가 vs 무변화)",
+      "score": "GFM emb_max_consec",
+      "n_pos": 4131,
+      "n_neg": 158689,
+      "prevalence": 0.0254,
+      "auroc": 0.9391,
+      "ap": 0.6444
+    },
+    {
+      "task": "임상도 변화여부(벌채·전용·증가 vs 무변화)",
+      "score": "지수 |ΔNDVI|",
+      "n_pos": 4131,
+      "n_neg": 158689,
+      "prevalence": 0.0254,
+      "auroc": 0.629,
+      "ap": 0.1268
+    },
+    {
+      "task": "임상도 변화여부(벌채·전용·증가 vs 무변화)",
+      "score": "지수 −ΔNDVI",
+      "n_pos": 4131,
+      "n_neg": 158689,
+      "prevalence": 0.0254,
+      "auroc": 0.633,
+      "ap": 0.1779
+    },
+    {
+      "task": "임상도 변화여부(벌채·전용·증가 vs 무변화)",
+      "score": "지수 최대 NDVI 감소",
+      "n_pos": 4131,
+      "n_neg": 158689,
+      "prevalence": 0.0254,
+      "auroc": 0.89,
+      "ap": 0.5882
+    },
+    {
+      "task": "국유림 검증라벨 변화여부(실적·임상도 합의)",
+      "score": "GFM emb_first_last",
+      "n_pos": 724,
+      "n_neg": 25822,
+      "prevalence": 0.0273,
+      "auroc": 0.8085,
+      "ap": 0.1716
+    },
+    {
+      "task": "국유림 검증라벨 변화여부(실적·임상도 합의)",
+      "score": "GFM emb_max_consec",
+      "n_pos": 724,
+      "n_neg": 25822,
+      "prevalence": 0.0273,
+      "auroc": 0.9874,
+      "ap": 0.8697
+    },
+    {
+      "task": "국유림 검증라벨 변화여부(실적·임상도 합의)",
+      "score": "지수 |ΔNDVI|",
+      "n_pos": 724,
+      "n_neg": 25822,
+      "prevalence": 0.0273,
+      "auroc": 0.5158,
+      "ap": 0.1232
+    },
+    {
+      "task": "국유림 검증라벨 변화여부(실적·임상도 합의)",
+      "score": "지수 −ΔNDVI",
+      "n_pos": 724,
+      "n_neg": 25822,
+      "prevalence": 0.0273,
+      "auroc": 0.7828,
+      "ap": 0.3215
+    },
+    {
+      "task": "국유림 검증라벨 변화여부(실적·임상도 합의)",
+      "score": "지수 최대 NDVI 감소",
+      "n_pos": 724,
+      "n_neg": 25822,
+      "prevalence": 0.0273,
+      "auroc": 0.9789,
+      "ap": 0.9017
+    },
+    {
+      "task": "임상도 벌채·갱신 vs 무변화",
+      "score": "GFM emb_first_last",
+      "n_pos": 2666,
+      "n_neg": 158689,
+      "prevalence": 0.0165,
+      "auroc": 0.7952,
+      "ap": 0.1932
+    },
+    {
+      "task": "임상도 벌채·갱신 vs 무변화",
+      "score": "GFM emb_max_consec",
+      "n_pos": 2666,
+      "n_neg": 158689,
+      "prevalence": 0.0165,
+      "auroc": 0.9889,
+      "ap": 0.781
+    },
+    {
+      "task": "임상도 벌채·갱신 vs 무변화",
+      "score": "지수 |ΔNDVI|",
+      "n_pos": 2666,
+      "n_neg": 158689,
+      "prevalence": 0.0165,
+      "auroc": 0.5999,
+      "ap": 0.1189
+    },
+    {
+      "task": "임상도 벌채·갱신 vs 무변화",
+      "score": "지수 −ΔNDVI",
+      "n_pos": 2666,
+      "n_neg": 158689,
+      "prevalence": 0.0165,
+      "auroc": 0.7919,
+      "ap": 0.2367
+    },
+    {
+      "task": "임상도 벌채·갱신 vs 무변화",
+      "score": "지수 최대 NDVI 감소",
+      "n_pos": 2666,
+      "n_neg": 158689,
+      "prevalence": 0.0165,
+      "auroc": 0.9823,
+      "ap": 0.7153
+    },
+    {
+      "task": "국유림 실적 수확·갱신 vs 실적없음",
+      "score": "GFM emb_first_last",
+      "n_pos": 4954,
+      "n_neg": 45430,
+      "prevalence": 0.0983,
+      "auroc": 0.6619,
+      "ap": 0.1793
+    },
+    {
+      "task": "국유림 실적 수확·갱신 vs 실적없음",
+      "score": "GFM emb_max_consec",
+      "n_pos": 4954,
+      "n_neg": 45430,
+      "prevalence": 0.0983,
+      "auroc": 0.7041,
+      "ap": 0.4071
+    },
+    {
+      "task": "국유림 실적 수확·갱신 vs 실적없음",
+      "score": "지수 |ΔNDVI|",
+      "n_pos": 4954,
+      "n_neg": 45430,
+      "prevalence": 0.0983,
+      "auroc": 0.5785,
+      "ap": 0.1471
+    },
+    {
+      "task": "국유림 실적 수확·갱신 vs 실적없음",
+      "score": "지수 −ΔNDVI",
+      "n_pos": 4954,
+      "n_neg": 45430,
+      "prevalence": 0.0983,
+      "auroc": 0.4986,
+      "ap": 0.1608
+    },
+    {
+      "task": "국유림 실적 수확·갱신 vs 실적없음",
+      "score": "지수 최대 NDVI 감소",
+      "n_pos": 4954,
+      "n_neg": 45430,
+      "prevalence": 0.0983,
+      "auroc": 0.6993,
+      "ap": 0.4139
+    },
+    {
+      "task": "국유림 실적 솎아베기 vs 실적없음",
+      "score": "GFM emb_first_last",
+      "n_pos": 5796,
+      "n_neg": 45430,
+      "prevalence": 0.1131,
+      "auroc": 0.6843,
+      "ap": 0.2654
+    },
+    {
+      "task": "국유림 실적 솎아베기 vs 실적없음",
+      "score": "GFM emb_max_consec",
+      "n_pos": 5796,
+      "n_neg": 45430,
+      "prevalence": 0.1131,
+      "auroc": 0.6255,
+      "ap": 0.1873
+    },
+    {
+      "task": "국유림 실적 솎아베기 vs 실적없음",
+      "score": "지수 |ΔNDVI|",
+      "n_pos": 5796,
+      "n_neg": 45430,
+      "prevalence": 0.1131,
+      "auroc": 0.5683,
+      "ap": 0.1944
+    },
+    {
+      "task": "국유림 실적 솎아베기 vs 실적없음",
+      "score": "지수 −ΔNDVI",
+      "n_pos": 5796,
+      "n_neg": 45430,
+      "prevalence": 0.1131,
+      "auroc": 0.4379,
+      "ap": 0.1046
+    },
+    {
+      "task": "국유림 실적 솎아베기 vs 실적없음",
+      "score": "지수 최대 NDVI 감소",
+      "n_pos": 5796,
+      "n_neg": 45430,
+      "prevalence": 0.1131,
+      "auroc": 0.5096,
+      "ap": 0.1183
+    }
+  ],
+  "classifier": {
+    "지수만": {
+      "n_train": 79266,
+      "n_test": 162820,
+      "balanced_accuracy": 0.6711,
+      "macro_f1": 0.502,
+      "changed_auroc": 0.9789,
+      "changed_ap": 0.8215,
+      "verified_changed_auroc": 0.998,
+      "verified_changed_ap": 0.9731,
+      "n_test_verified": 26546,
+      "per_class": {
+        "no_change": {
+          "precision": 0.9966,
+          "recall": 0.9666,
+          "f1-score": 0.9814,
+          "support": 158689.0
+        },
+        "harvest": {
+          "precision": 0.5112,
+          "recall": 0.9411,
+          "f1-score": 0.6625,
+          "support": 2666.0
+        },
+        "conversion": {
+          "precision": 0.038,
+          "recall": 0.3037,
+          "f1-score": 0.0676,
+          "support": 135.0
+        },
+        "gain": {
+          "precision": 0.2158,
+          "recall": 0.4729,
+          "f1-score": 0.2963,
+          "support": 1330.0
+        }
+      },
+      "n_features": 48
+    },
+    "지수+GFM": {
+      "n_train": 79266,
+      "n_test": 162820,
+      "balanced_accuracy": 0.6768,
+      "macro_f1": 0.5142,
+      "changed_auroc": 0.9808,
+      "changed_ap": 0.8219,
+      "verified_changed_auroc": 0.9979,
+      "verified_changed_ap": 0.9752,
+      "n_test_verified": 26546,
+      "per_class": {
+        "no_change": {
+          "precision": 0.9964,
+          "recall": 0.9706,
+          "f1-score": 0.9833,
+          "support": 158689.0
+        },
+        "harvest": {
+          "precision": 0.5118,
+          "recall": 0.9516,
+          "f1-score": 0.6656,
+          "support": 2666.0
+        },
+        "conversion": {
+          "precision": 0.0567,
+          "recall": 0.3407,
+          "f1-score": 0.0971,
+          "support": 135.0
+        },
+        "gain": {
+          "precision": 0.2388,
+          "recall": 0.4444,
+          "f1-score": 0.3106,
+          "support": 1330.0
+        }
+      },
+      "n_features": 82
+    }
+  },
+  "change_year": {
+    "n": 4129,
+    "emb_max_year": {
+      "exact": 0.0651,
+      "within_1yr": 0.2812
+    },
+    "ndvi_drop_year": {
+      "exact": 0.0867,
+      "within_1yr": 0.2783
+    }
+  },
+  "mgmt_agreement_pred_changed_share": {
+    "수확·갱신 실적 소반": 0.4233,
+    "솎아베기 실적 소반": 0.0862,
+    "기타(시설·소득·피해복구) 실적 소반": 0.0489,
+    "실적 없는 소반": 0.0242
+  },
+  "class_area_ha": {
+    "no_change": 84690.3,
+    "harvest": 5275.0,
+    "conversion": 14223.5,
+    "gain": 7620.6
+  },
+  "elapsed_min": 17.3,
+  "class_area_ha_forestmask": {
+    "no_change": 77906.4,
+    "harvest": 3006.8,
+    "conversion": 2126.1,
+    "gain": 1996.9
+  },
+  "forestmask": "임상도 2019 또는 2025 임지(입목지·무립목지) 화소만 — 두 시기 모두 비산림·도화범위 밖 제외"
+}

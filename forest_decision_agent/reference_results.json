@@ -1,6 +1,6 @@
 {
   "출처": "Colab 실험 (Drive GEE_Export/compare_runs, final_change_2019_2025), 2019→2025 합의 라벨, 512 px 공간 블록 홀드아웃",
-  "Sentinel-2 + Mini-GFM (20 m)": {"macro_F1": 0.514, "변화_AP": 0.822},
+  "Sentinel-2 + S2-TSFM (20 m)": {"macro_F1": 0.514, "변화_AP": 0.822},
   "AlphaEarth 분류기 (10 m)": {"macro_F1": 0.578, "변화_AP": 0.871},
   "AlphaEarth + S2 지수 (10 m)": {"macro_F1": 0.585, "변화_AP": 0.879, "국유림_검증_AP": 0.993},
   "최종 변화지도 (산림 마스크·최소면적)": {"macro_F1": 0.606, "벌채갱신_F1": 0.84, "산지전용_F1": 0.202, "산림증가_F1": 0.387},

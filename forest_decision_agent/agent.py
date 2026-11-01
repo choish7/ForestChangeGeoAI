@@ -18,7 +18,7 @@ from . import tools as T
 MODEL = os.environ.get("FOREST_AGENT_MODEL", "claude-opus-5-5")
 
 SYSTEM = """당신은 산림청 정책담당자를 돕는 산림변화 의사결정 지원 에이전트입니다.
-대상: 강원특별자치도 춘천시, 2019→2025. 근거: 학습된 변화탐지 모델 2종(AlphaEarth+S2 최종지도, Sentinel-2 Mini-GFM),
+대상: 강원특별자치도 춘천시, 2019→2025. 근거: 학습된 변화탐지 모델 2종(AlphaEarth+S2 최종지도, Sentinel-2 S2-TSFM),
 AlphaEarth 연간 임베딩·Sentinel-2 연간 지수 원자료(2017~2025),
 국유림 경영계획부 사업실적(소반 단위), 임상도 2019·2025, 보전산지 해제(산지전용) 고시 필지, 산불·산사태 이력, 임도·도로 거리.
 
@@ -46,7 +46,7 @@ AlphaEarth 연간 임베딩·Sentinel-2 연간 지수 원자료(2017~2025),
 - 임상도 연도별 관측 라벨로 검증한 결과, AlphaEarth 연속연도 신호는 2022·2023년 안정 산림에서도 오탐률이 높았다(5.6%·7.4%).
   이 해의 AlphaEarth 단독 변화는 Sentinel-2·학습모형 신호와 함께 확인될 때만 강한 근거로 쓰고, 아니면 '연도 신뢰도 낮음'으로 밝힌다.
 - 상위 몇 % 같은 상대 기준으로 고른 면적은 '검증된 변화면적'이 아니라 후보 면적임을 밝힌다.
-- 변화 판정은 학습 모델 최종지도 기준이다. 신호일치수(AE 임베딩거리·Mini-GFM·최종지도 중 변화로 본 수)로 불확실성을 표시하고,
+- 변화 판정은 학습 모델 최종지도 기준이다. 신호일치수(AE 임베딩거리·S2-TSFM·최종지도 중 변화로 본 수)로 불확실성을 표시하고,
   모델의 변화유형(벌채·갱신/산지전용/산림증가)과 변화연도를 함께 쓴다. 산지전용 유형은 모델 정확도가 낮아 후보로만 쓴다.
 - 기간 조건(예: 2020~2024)은 AE_변화연도와 사업실적 연도로 걸러 적용하고, 위성 신호 자체는 2019→2025 비교임을 밝힌다.
 - 'AlphaEarth 의 분석상 추가 가치'는 evaluate_foundation_model 결과(같은 오탐률에서 Sentinel-2 와 비교)로,
@@ -225,8 +225,8 @@ def run_offline(query: str, area: dict | None = None, log=print, session: T.Sess
     pt = "\n".join(f"| {r['라벨']} | {r['필지']} | {r['해제면적_m2']} | {r['AE_변화비율_중앙값']} |" for r in sm["산지전용_필지"])
     body = [f"## 요약 ({sm['지역']})",
             f"- 국유림 소반 {sm['국유림_소반']}개, {sm['국유림_면적_ha']} ha. AlphaEarth 변화면적 {sm['AE_변화면적_ha']} ha, Sentinel-2 변화면적 {sm['S2_변화면적_ha']} ha.",
-            f"- 학습 모델 변화면적(ha): 최종지도(AE+S2) {sm['모델_변화면적_ha']['FM']}, Mini-GFM(S2) {sm['모델_변화면적_ha']['MG']}.",
-            f"- 신호일치수별 소반(AE 임베딩거리·Mini-GFM·최종지도 중 변화로 본 수): {sm['신호일치수별_소반']}.",
+            f"- 학습 모델 변화면적(ha): 최종지도(AE+S2) {sm['모델_변화면적_ha']['FM']}, S2-TSFM {sm['모델_변화면적_ha']['MG']}.",
+            f"- 신호일치수별 소반(AE 임베딩거리·S2-TSFM·최종지도 중 변화로 본 수): {sm['신호일치수별_소반']}.",
             f"- 재해(2019~2025): {sm['재해_2019_2025'] or '없음'}. 최종지도 변화연도별 소반수: {sm['FM_변화연도별_소반수'] or '없음'}.",
             "", "## 판정별 현황 (관측·기록 대조)", "| 판정 | 소반 | 면적 ha | AE 변화 ha | S2 변화 ha |", "|---|---|---|---|---|", jt]
     if rk["ranking"]:
@@ -248,7 +248,7 @@ def run_offline(query: str, area: dict | None = None, log=print, session: T.Sess
                  f"- 소반 판별 AUROC(라벨 없이 계산한 신호): AlphaEarth {un['AlphaEarth 임베딩거리 변화비율']['AUROC']}, "
                  f"Sentinel-2 {un['Sentinel-2 NDVI 변화비율']['AUROC']}",
                  f"- 학습 모델 홀드아웃 macro F1: 최종지도(AE+S2) {ev['학습모델_홀드아웃(모델 보고서)']['최종지도']['macro_f1']}, "
-                 f"Mini-GFM(S2) {ev['학습모델_홀드아웃(모델 보고서)']['Mini-GFM']['macro_f1']}"]
+                 f"S2-TSFM {ev['학습모델_홀드아웃(모델 보고서)']['S2-TSFM']['macro_f1']}"]
     # 변화의 의미 설명: 임베딩(시기) → 지수 추이(방향·지속성) → 임상도·실적·재해(맥락)
     ex = [step("explain_change", unit_id=r["단위ID"]) for r in rk["ranking"][:3]]
     if ex:
