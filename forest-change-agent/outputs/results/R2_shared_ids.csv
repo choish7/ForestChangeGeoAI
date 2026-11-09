@@ -1,0 +1,180 @@
+﻿Comparison,ID type,ID,Training samples,Evaluation samples
+Training blocks vs spatial-block hold-out,overlay fragments,P001132,1,2
+Training blocks vs spatial-block hold-out,overlay fragments,P007589,1,1
+Training blocks vs spatial-block hold-out,overlay fragments,P014422,1,9
+Training blocks vs spatial-block hold-out,overlay fragments,P015311,2,2
+Training blocks vs spatial-block hold-out,overlay fragments,P015414,1,1
+Training blocks vs spatial-block hold-out,overlay fragments,P016304,5,1
+Training blocks vs spatial-block hold-out,overlay fragments,P017654,3,3
+Training blocks vs spatial-block hold-out,overlay fragments,P019404,1,1
+Training blocks vs spatial-block hold-out,overlay fragments,P019681,1,3
+Training blocks vs spatial-block hold-out,overlay fragments,P021737,4,5
+Training blocks vs spatial-block hold-out,overlay fragments,P024150,1,1
+Training blocks vs spatial-block hold-out,overlay fragments,P024231,1,1
+Training blocks vs spatial-block hold-out,overlay fragments,P024357,1,1
+Training blocks vs spatial-block hold-out,overlay fragments,P024698,1,2
+Training blocks vs spatial-block hold-out,overlay fragments,P026107,1,1
+Training blocks vs spatial-block hold-out,overlay fragments,P026301,1,4
+Training blocks vs spatial-block hold-out,overlay fragments,P026531,1,1
+Training blocks vs spatial-block hold-out,overlay fragments,P026751,1,3
+Training blocks vs spatial-block hold-out,overlay fragments,P028796,1,1
+Training blocks vs spatial-block hold-out,overlay fragments,P043278,2,1
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_001253,1,4
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_007123,1,1
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_008657,1,2
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_008658,5,1
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_009134,13,4
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_013459,1,16
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_014292,2,2
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_014293,3,1
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_014297,9,2
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_014339,1,3
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_015198,5,1
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_016422,3,3
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_018030,1,1
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_018293,1,3
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_020098,39,7
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_022095,1,1
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_022148,1,1
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_022239,1,1
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_022269,1,10
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_022309,2,1
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_022393,1,2
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_023050,12,2
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_023383,1,1
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_023520,1,8
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_023614,5,1
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_023653,2,1
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_023655,3,1
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_023742,7,3
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_025307,1,1
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_031032,4,2
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_031681,5,8
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_036592,2,1
+Training blocks vs spatial-block hold-out,2019 map polygons,M2019_036852,2,1
+Training blocks vs spatial-block hold-out,2025 map polygons,M2025_002488,2,1
+Training blocks vs spatial-block hold-out,2025 map polygons,M2025_009372,1,1
+Training blocks vs spatial-block hold-out,2025 map polygons,M2025_009383,1,1
+Training blocks vs spatial-block hold-out,2025 map polygons,M2025_009385,1,1
+Training blocks vs spatial-block hold-out,2025 map polygons,M2025_011175,4,6
+Training blocks vs spatial-block hold-out,2025 map polygons,M2025_020458,1,3
+Training blocks vs spatial-block hold-out,2025 map polygons,M2025_025196,5,1
+Training blocks vs spatial-block hold-out,2025 map polygons,M2025_025427,1,1
+Training blocks vs spatial-block hold-out,2025 map polygons,M2025_026144,3,3
+Training blocks vs spatial-block hold-out,2025 map polygons,M2025_027377,1,1
+Training blocks vs spatial-block hold-out,2025 map polygons,M2025_027384,1,1
+Training blocks vs spatial-block hold-out,2025 map polygons,M2025_031683,1,15
+Training blocks vs spatial-block hold-out,2025 map polygons,M2025_032686,1,3
+Training blocks vs spatial-block hold-out,2025 map polygons,M2025_033178,1,1
+Training blocks vs spatial-block hold-out,2025 map polygons,M2025_033917,1,1
+Training blocks vs spatial-block hold-out,2025 map polygons,M2025_034141,2,2
+Training blocks vs spatial-block hold-out,2025 map polygons,M2025_034187,1,1
+Training blocks vs spatial-block hold-out,2025 map polygons,M2025_035720,1,4
+Training blocks vs spatial-block hold-out,2025 map polygons,M2025_035891,1,2
+Training blocks vs spatial-block hold-out,2025 map polygons,M2025_042185,1,2
+CV fold 1: other training folds vs fold 1,overlay fragments,P000330,3,1
+CV fold 1: other training folds vs fold 1,overlay fragments,P003307,3,4
+CV fold 1: other training folds vs fold 1,overlay fragments,P003739,1,1
+CV fold 1: other training folds vs fold 1,overlay fragments,P009516,1,2
+CV fold 1: other training folds vs fold 1,overlay fragments,P009685,2,3
+CV fold 1: other training folds vs fold 1,overlay fragments,P031104,1,1
+CV fold 1: other training folds vs fold 1,overlay fragments,P039597,1,2
+CV fold 1: other training folds vs fold 1,overlay fragments,P045092,1,1
+CV fold 1: other training folds vs fold 1,2019 map polygons,M2019_000509,3,1
+CV fold 1: other training folds vs fold 1,2019 map polygons,M2019_003184,3,4
+CV fold 1: other training folds vs fold 1,2019 map polygons,M2019_003525,1,1
+CV fold 1: other training folds vs fold 1,2019 map polygons,M2019_008880,1,2
+CV fold 1: other training folds vs fold 1,2019 map polygons,M2019_009023,2,3
+CV fold 1: other training folds vs fold 1,2019 map polygons,M2019_023050,1,11
+CV fold 1: other training folds vs fold 1,2019 map polygons,M2019_027260,7,1
+CV fold 1: other training folds vs fold 1,2019 map polygons,M2019_027507,1,1
+CV fold 1: other training folds vs fold 1,2019 map polygons,M2019_033759,2,2
+CV fold 1: other training folds vs fold 1,2019 map polygons,M2019_037946,1,1
+CV fold 1: other training folds vs fold 1,2025 map polygons,M2025_004248,1,1
+CV fold 1: other training folds vs fold 1,2025 map polygons,M2025_007745,6,2
+CV fold 1: other training folds vs fold 1,2025 map polygons,M2025_015865,1,1
+CV fold 1: other training folds vs fold 1,2025 map polygons,M2025_028473,1,1
+CV fold 1: other training folds vs fold 1,2025 map polygons,M2025_028665,3,4
+CV fold 1: other training folds vs fold 1,2025 map polygons,M2025_028910,1,1
+CV fold 1: other training folds vs fold 1,2025 map polygons,M2025_037600,3,1
+CV fold 1: other training folds vs fold 1,2025 map polygons,M2025_038551,1,2
+CV fold 1: other training folds vs fold 1,2025 map polygons,M2025_041055,2,3
+CV fold 2: other training folds vs fold 2,overlay fragments,P009971,3,1
+CV fold 2: other training folds vs fold 2,overlay fragments,P013107,2,1
+CV fold 2: other training folds vs fold 2,overlay fragments,P015026,11,2
+CV fold 2: other training folds vs fold 2,overlay fragments,P031104,1,1
+CV fold 2: other training folds vs fold 2,overlay fragments,P035077,1,2
+CV fold 2: other training folds vs fold 2,overlay fragments,P039008,3,1
+CV fold 2: other training folds vs fold 2,overlay fragments,P039137,1,1
+CV fold 2: other training folds vs fold 2,overlay fragments,P039597,2,1
+CV fold 2: other training folds vs fold 2,2019 map polygons,M2019_009251,3,1
+CV fold 2: other training folds vs fold 2,2019 map polygons,M2019_012249,2,1
+CV fold 2: other training folds vs fold 2,2019 map polygons,M2019_013989,11,2
+CV fold 2: other training folds vs fold 2,2019 map polygons,M2019_023771,2,1
+CV fold 2: other training folds vs fold 2,2019 map polygons,M2019_027260,1,7
+CV fold 2: other training folds vs fold 2,2019 map polygons,M2019_027507,1,1
+CV fold 2: other training folds vs fold 2,2019 map polygons,M2019_030699,1,2
+CV fold 2: other training folds vs fold 2,2019 map polygons,M2019_033433,3,1
+CV fold 2: other training folds vs fold 2,2019 map polygons,M2019_033531,1,1
+CV fold 2: other training folds vs fold 2,2019 map polygons,M2019_033759,2,2
+CV fold 2: other training folds vs fold 2,2025 map polygons,M2025_005342,3,1
+CV fold 2: other training folds vs fold 2,2025 map polygons,M2025_007145,1,1
+CV fold 2: other training folds vs fold 2,2025 map polygons,M2025_007745,2,6
+CV fold 2: other training folds vs fold 2,2025 map polygons,M2025_010968,1,2
+CV fold 2: other training folds vs fold 2,2025 map polygons,M2025_015865,1,1
+CV fold 2: other training folds vs fold 2,2025 map polygons,M2025_016782,11,2
+CV fold 2: other training folds vs fold 2,2025 map polygons,M2025_031351,3,1
+CV fold 2: other training folds vs fold 2,2025 map polygons,M2025_032469,2,1
+CV fold 3: other training folds vs fold 3,overlay fragments,P043224,1,1
+CV fold 3: other training folds vs fold 3,overlay fragments,P044324,3,8
+CV fold 3: other training folds vs fold 3,2019 map polygons,M2019_023050,11,1
+CV fold 3: other training folds vs fold 3,2019 map polygons,M2019_036553,1,1
+CV fold 3: other training folds vs fold 3,2019 map polygons,M2019_036852,1,1
+CV fold 3: other training folds vs fold 3,2019 map polygons,M2019_037214,3,8
+CV fold 3: other training folds vs fold 3,2025 map polygons,M2025_006293,1,1
+CV fold 3: other training folds vs fold 3,2025 map polygons,M2025_017876,3,8
+CV fold 4: other training folds vs fold 4,overlay fragments,P003307,4,3
+CV fold 4: other training folds vs fold 4,overlay fragments,P003739,1,1
+CV fold 4: other training folds vs fold 4,overlay fragments,P009516,2,1
+CV fold 4: other training folds vs fold 4,overlay fragments,P009685,3,2
+CV fold 4: other training folds vs fold 4,overlay fragments,P009971,1,3
+CV fold 4: other training folds vs fold 4,overlay fragments,P013107,1,2
+CV fold 4: other training folds vs fold 4,overlay fragments,P015026,2,11
+CV fold 4: other training folds vs fold 4,overlay fragments,P035077,2,1
+CV fold 4: other training folds vs fold 4,overlay fragments,P039008,1,3
+CV fold 4: other training folds vs fold 4,overlay fragments,P039137,1,1
+CV fold 4: other training folds vs fold 4,overlay fragments,P043224,1,1
+CV fold 4: other training folds vs fold 4,overlay fragments,P044324,8,3
+CV fold 4: other training folds vs fold 4,2019 map polygons,M2019_003184,4,3
+CV fold 4: other training folds vs fold 4,2019 map polygons,M2019_003525,1,1
+CV fold 4: other training folds vs fold 4,2019 map polygons,M2019_008880,2,1
+CV fold 4: other training folds vs fold 4,2019 map polygons,M2019_009023,3,2
+CV fold 4: other training folds vs fold 4,2019 map polygons,M2019_009251,1,3
+CV fold 4: other training folds vs fold 4,2019 map polygons,M2019_012249,1,2
+CV fold 4: other training folds vs fold 4,2019 map polygons,M2019_013989,2,11
+CV fold 4: other training folds vs fold 4,2019 map polygons,M2019_030699,2,1
+CV fold 4: other training folds vs fold 4,2019 map polygons,M2019_033433,1,3
+CV fold 4: other training folds vs fold 4,2019 map polygons,M2019_033531,1,1
+CV fold 4: other training folds vs fold 4,2019 map polygons,M2019_036553,1,1
+CV fold 4: other training folds vs fold 4,2019 map polygons,M2019_037214,8,3
+CV fold 4: other training folds vs fold 4,2025 map polygons,M2025_005342,1,3
+CV fold 4: other training folds vs fold 4,2025 map polygons,M2025_006293,1,1
+CV fold 4: other training folds vs fold 4,2025 map polygons,M2025_007145,1,1
+CV fold 4: other training folds vs fold 4,2025 map polygons,M2025_010968,2,1
+CV fold 4: other training folds vs fold 4,2025 map polygons,M2025_016782,2,11
+CV fold 4: other training folds vs fold 4,2025 map polygons,M2025_017876,8,3
+CV fold 4: other training folds vs fold 4,2025 map polygons,M2025_028473,1,1
+CV fold 4: other training folds vs fold 4,2025 map polygons,M2025_028665,4,3
+CV fold 4: other training folds vs fold 4,2025 map polygons,M2025_028910,1,1
+CV fold 4: other training folds vs fold 4,2025 map polygons,M2025_031351,1,3
+CV fold 4: other training folds vs fold 4,2025 map polygons,M2025_032469,1,2
+CV fold 4: other training folds vs fold 4,2025 map polygons,M2025_038551,2,1
+CV fold 4: other training folds vs fold 4,2025 map polygons,M2025_041055,3,2
+CV fold 5: other training folds vs fold 5,overlay fragments,P000330,1,3
+CV fold 5: other training folds vs fold 5,overlay fragments,P045092,1,1
+CV fold 5: other training folds vs fold 5,2019 map polygons,M2019_000509,1,3
+CV fold 5: other training folds vs fold 5,2019 map polygons,M2019_023771,1,2
+CV fold 5: other training folds vs fold 5,2019 map polygons,M2019_036852,1,1
+CV fold 5: other training folds vs fold 5,2019 map polygons,M2019_037946,1,1
+CV fold 5: other training folds vs fold 5,2025 map polygons,M2025_004248,1,1
+CV fold 5: other training folds vs fold 5,2025 map polygons,M2025_037600,1,3

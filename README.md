@@ -15,12 +15,12 @@ The study evaluates annual [AlphaEarth Foundations](https://developers.google.co
 
 | Type | Files |
 |---|---|
-| Source code | `forest-change-agent/fcd/` (shared modules), `scripts/` (experiments 01–13), `prep/` (data preparation), `colab/` (step-numbered Colab notebooks and modules); `forest_decision_agent/*.py`, `static/index.html` |
+| Source code | `forest-change-agent/fcd/` (shared modules), `scripts/` (experiments 01–13; second-revision scripts 14–16), `prep/` (data preparation), `colab/` (step-numbered Colab notebooks and modules); `forest_decision_agent/*.py`, `static/index.html` |
 | Documents | `forest-change-agent/README.md`, `EXPERIMENTS.md`, `data/README.md` (raw-data sources); `forest_decision_agent/README.md` |
 | Sample data | `forest-change-agent/work/samples.parquet` and `features.parquet` (6,027 Chuncheon points with labels and GEE features); `work/inje/inje_samples.parquet` (2,100 Inje points) |
 | Preprocessed data | `forest-change-agent/release_preprocessed/` (boundaries, conversion-notice parcels and labels, forest masks, thinning sites). Non-public layers and columns are removed; see its `README.md` |
 | Models | `forest-change-agent/outputs/change_model.joblib` (benchmark classifier), `models/ae_class_models/*_local.joblib` (AlphaEarth classifiers), `models/s2_tsfm_chuncheon/` (S2-TSFM weights and classifier) |
-| Results | `forest-change-agent/outputs/metrics.json`, `ablation.csv`, `results/` (experiments E1–E10), `model_reports/`, `inje_visual_check/` (blind visual-interpretation sheet) |
+| Results | `forest-change-agent/outputs/metrics.json`, `ablation.csv`, `results/` (experiments E1–E10 and second-revision files `E10_inje_transfer_r2.json`, `R2_*`), `model_reports/`, `inje_visual_check/` (blind visual-interpretation sheet) |
 
 ## What is not included
 

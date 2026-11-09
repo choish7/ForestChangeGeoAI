@@ -1,0 +1,210 @@
+{
+ "description": "R2 rerun of E10. Chuncheon = work/features.parquet (Table 5 matrix); Inje = same fcd extraction code.",
+ "env": {
+  "python": "3.14.0",
+  "sklearn": "1.9.0",
+  "numpy": "2.3.5",
+  "pandas": "2.3.3"
+ },
+ "n_inje": 2100,
+ "T1_binary": [
+  {
+   "features": "AE",
+   "n_feat": 75,
+   "chuncheon_holdout_F1": 0.933,
+   "inje_transfer_F1": 0.781,
+   "P": 0.954,
+   "R": 0.661,
+   "inje_local_CV_F1": "0.817 ± 0.066",
+   "inje_transfer_F1_thr0.2": 0.826
+  },
+  {
+   "features": "S2",
+   "n_feat": 6,
+   "chuncheon_holdout_F1": 0.772,
+   "inje_transfer_F1": 0.755,
+   "P": 0.822,
+   "R": 0.698,
+   "inje_local_CV_F1": "0.755 ± 0.067"
+  },
+  {
+   "features": "TERR",
+   "n_feat": 2,
+   "chuncheon_holdout_F1": 0.513,
+   "inje_transfer_F1": 0.367,
+   "P": 0.547,
+   "R": 0.276,
+   "inje_local_CV_F1": "0.499 ± 0.035"
+  },
+  {
+   "features": "AE+S2",
+   "n_feat": 81,
+   "chuncheon_holdout_F1": 0.936,
+   "inje_transfer_F1": 0.831,
+   "P": 0.961,
+   "R": 0.733,
+   "inje_local_CV_F1": "0.861 ± 0.055",
+   "inje_transfer_F1_thr0.2": 0.856
+  },
+  {
+   "features": "AE+S2+TERR",
+   "n_feat": 83,
+   "chuncheon_holdout_F1": 0.936,
+   "inje_transfer_F1": 0.76,
+   "P": 0.966,
+   "R": 0.626,
+   "inje_local_CV_F1": "0.862 ± 0.057",
+   "inje_transfer_F1_thr0.2": 0.804
+  }
+ ],
+ "threshold_diagnostic": {
+  "AE": {
+   "0.5": [
+    0.781,
+    {
+     "harvest": 0.958,
+     "conversion": 0.34,
+     "gain": 0.487
+    }
+   ],
+   "0.2": [
+    0.826,
+    {
+     "harvest": 0.968,
+     "conversion": 0.467,
+     "gain": 0.653
+    }
+   ],
+   "0.1": [
+    0.84,
+    {
+     "harvest": 0.972,
+     "conversion": 0.553,
+     "gain": 0.733
+    }
+   ]
+  },
+  "AE+S2": {
+   "0.5": [
+    0.831,
+    {
+     "harvest": 0.966,
+     "conversion": 0.6,
+     "gain": 0.477
+    }
+   ],
+   "0.2": [
+    0.856,
+    {
+     "harvest": 0.968,
+     "conversion": 0.67,
+     "gain": 0.61
+    }
+   ],
+   "0.1": [
+    0.869,
+    {
+     "harvest": 0.974,
+     "conversion": 0.713,
+     "gain": 0.693
+    }
+   ]
+  },
+  "AE+S2+TERR": {
+   "0.5": [
+    0.76,
+    {
+     "harvest": 0.95,
+     "conversion": 0.363,
+     "gain": 0.35
+    }
+   ],
+   "0.2": [
+    0.804,
+    {
+     "harvest": 0.962,
+     "conversion": 0.53,
+     "gain": 0.397
+    }
+   ],
+   "0.1": [
+    0.823,
+    {
+     "harvest": 0.97,
+     "conversion": 0.62,
+     "gain": 0.427
+    }
+   ]
+  }
+ },
+ "T1_transfer_AE+S2+TERR": {
+  "confusion[[TN,FP],[FN,TP]]": [
+   [
+    976,
+    24
+   ],
+   [
+    411,
+    689
+   ]
+  ],
+  "FN_by_type": {
+   "harvest": [
+    25,
+    500,
+    0.05
+   ],
+   "conversion": [
+    191,
+    300,
+    0.637
+   ],
+   "gain": [
+    195,
+    300,
+    0.65
+   ]
+  }
+ },
+ "AE_cos_dist_median_by_class": {
+  "chuncheon": {
+   "no_change": 0.031,
+   "harvest": 0.211,
+   "conversion": 0.042,
+   "gain": 0.08
+  },
+  "inje": {
+   "no_change": 0.025,
+   "harvest": 0.206,
+   "conversion": 0.039,
+   "gain": 0.083
+  }
+ },
+ "T2_type": {
+  "chuncheon_holdout_macroF1": 0.777,
+  "inje_transfer_macroF1": 0.775,
+  "inje_transfer_classF1": {
+   "harvest": 0.853,
+   "conversion": 0.802,
+   "gain": 0.669
+  },
+  "inje_local_CV_macroF1": "0.751 ± 0.124",
+  "inje_transfer_confusion(rows=true: harvest, conversion, gain)": [
+   [
+    434,
+    19,
+    47
+   ],
+   [
+    10,
+    227,
+    63
+   ],
+   [
+    74,
+    20,
+    206
+   ]
+  ]
+ }
+}

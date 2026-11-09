@@ -459,6 +459,19 @@ Run `scripts/07_event_timing.py`. Stand time series come from the Section 12 dat
    - Save retrained models to `models/`.
 10. **Forest roads (2026-11-01)**: `build_db.py` previously read roads from a file outside the project (`C:/src/ai_test/공간데이터/춘천_산림공간정보.gpkg`, 1.09 GB). The two layers it uses (`임도` with 119 features, `도로_1000` with 30,451 features) were extracted to `data/춘천_임도_도로.gpkg` (9.9 MB), and the service now reads that file.
 
+## Second revision (R2, 2026-11)
+
+| Step | Script | Output | Purpose |
+|---|---|---|---|
+| R2-a | `scripts/14_inje_transfer_r2.py` | `outputs/results/E10_inje_transfer_r2.json`, `work/inje/inje_features_r2.parquet` | Table 11 rerun. Chuncheon classifiers are trained on `work/features.parquet` (the Table 5 matrix), so the Chuncheon column equals Table 5. Inje features use the same `fcd` extraction code |
+| R2-b | `scripts/15_spatial_overlap_ledger.py` | `outputs/results/R2_spatial_overlap.csv`, `R2_shared_ids.csv` | Overlap of overlay fragments and original 2019/2025 map polygons between training and hold-out and between CV folds (needs the raw forest maps) |
+| R2-c | `scripts/16_alphaearth_assets.py` | `outputs/results/R2_alphaearth_assets.json` | AlphaEarth asset IDs, time stamps, MODEL_VERSION and DATASET_VERSION |
+
+Notes
+- Why Table 11 changed: re-extracting the Chuncheon features with the same code reproduces `work/features.parquet` exactly, and retraining reproduces Table 5. The R1 Table 11 column came from a separate Colab run whose software environment was not recorded. The R2 rerun used Python 3.14.0, scikit-learn 1.9.0, NumPy 2.3.5 and pandas 2.3.3.
+- R2 results: Inje transfer F1 AE 0.781, S2 0.755, TERR 0.367, AE+S2 0.831 (0.856 at the exploratory threshold 0.2), AE+S2+TERR 0.760; change-type macro-F1 0.775.
+- Timing ledgers for management-record stands are derived from non-public management plans and are therefore not included here.
+
 ## Appendix: manuscript numbers vs result files
 
 | Manuscript | Result file (relative to this folder) | Status |
@@ -472,5 +485,7 @@ Run `scripts/07_event_timing.py`. Stand time series come from the Section 12 dat
 | 4.5 ranking comparison | `outputs/results/E7_ranking.json` | match |
 | 4.6 card with 28 tokens | `outputs/cards/card_20260926_214131.md` | match |
 | Table 10 | `outputs/results/E8_report_checks.csv` | match |
-| Table 11, 4.8 | `outputs/results/E10_inje_transfer.json` | match |
+| Table 11, 4.8 (R2) | `outputs/results/E10_inje_transfer_r2.json` (R1 values: `E10_inje_transfer.json`) | match |
+| 3.3 fragment and map-polygon overlap (R2) | `outputs/results/R2_spatial_overlap.csv`, `R2_shared_ids.csv` | match |
+| 2.3 AlphaEarth versions (R2) | `outputs/results/R2_alphaearth_assets.json` | match |
 | Table 9 (49.2 / 69.4 ha) | demonstration card | not checked against a separate result file |

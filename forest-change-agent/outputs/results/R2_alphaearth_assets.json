@@ -1,0 +1,182 @@
+[
+ {
+  "dv": "1.0",
+  "id": "GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL/x2koobdedhd592l4t",
+  "mv": "2.1",
+  "psv": "1.01",
+  "te": "2025-01-01",
+  "ts": "2024-01-01",
+  "utm": "52N",
+  "region": "Chuncheon"
+ },
+ {
+  "dv": "1.0",
+  "id": "GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL/x5szlavctfo9png65",
+  "mv": "2.1",
+  "psv": "1.01",
+  "te": "2021-01-01",
+  "ts": "2020-01-01",
+  "utm": "52N",
+  "region": "Chuncheon"
+ },
+ {
+  "dv": "1.0",
+  "id": "GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL/x6xlejnyjxon5h65u",
+  "mv": "2.1",
+  "psv": "1.01",
+  "te": "2019-01-01",
+  "ts": "2018-01-01",
+  "utm": "52N",
+  "region": "Chuncheon"
+ },
+ {
+  "dv": "1.0",
+  "id": "GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL/x9lrll3goldrhyoio",
+  "mv": "2.1",
+  "psv": "1.01",
+  "te": "2020-01-01",
+  "ts": "2019-01-01",
+  "utm": "52N",
+  "region": "Chuncheon"
+ },
+ {
+  "dv": "1.0",
+  "id": "GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL/xp7w8tnq4z41bsuh6",
+  "mv": "2.1",
+  "psv": "1.01",
+  "te": "2022-01-01",
+  "ts": "2021-01-01",
+  "utm": "52N",
+  "region": "Chuncheon"
+ },
+ {
+  "dv": "1.0",
+  "id": "GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL/xqdwbllbedcqjjgpn",
+  "mv": "2.1",
+  "psv": "1.01",
+  "te": "2024-01-01",
+  "ts": "2023-01-01",
+  "utm": "52N",
+  "region": "Chuncheon"
+ },
+ {
+  "dv": "1.1",
+  "id": "GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL/xqxjog0f6l6xu8lwj",
+  "mv": "2.1",
+  "psv": "1.02",
+  "te": "2018-01-01",
+  "ts": "2017-01-01",
+  "utm": "52N",
+  "region": "Chuncheon"
+ },
+ {
+  "dv": "1.1",
+  "id": "GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL/xurp4os2cqcr2m74i",
+  "mv": "2.1",
+  "psv": "1.02",
+  "te": "2026-01-01",
+  "ts": "2025-01-01",
+  "utm": "52N",
+  "region": "Chuncheon"
+ },
+ {
+  "dv": "1.0",
+  "id": "GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL/xxo5vtefascis38zo",
+  "mv": "2.1",
+  "psv": "1.01",
+  "te": "2023-01-01",
+  "ts": "2022-01-01",
+  "utm": "52N",
+  "region": "Chuncheon"
+ },
+ {
+  "dv": "1.0",
+  "id": "GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL/x2koobdedhd592l4t",
+  "mv": "2.1",
+  "psv": "1.01",
+  "te": "2025-01-01",
+  "ts": "2024-01-01",
+  "utm": "52N",
+  "region": "Inje"
+ },
+ {
+  "dv": "1.0",
+  "id": "GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL/x5szlavctfo9png65",
+  "mv": "2.1",
+  "psv": "1.01",
+  "te": "2021-01-01",
+  "ts": "2020-01-01",
+  "utm": "52N",
+  "region": "Inje"
+ },
+ {
+  "dv": "1.0",
+  "id": "GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL/x6xlejnyjxon5h65u",
+  "mv": "2.1",
+  "psv": "1.01",
+  "te": "2019-01-01",
+  "ts": "2018-01-01",
+  "utm": "52N",
+  "region": "Inje"
+ },
+ {
+  "dv": "1.0",
+  "id": "GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL/x9lrll3goldrhyoio",
+  "mv": "2.1",
+  "psv": "1.01",
+  "te": "2020-01-01",
+  "ts": "2019-01-01",
+  "utm": "52N",
+  "region": "Inje"
+ },
+ {
+  "dv": "1.0",
+  "id": "GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL/xp7w8tnq4z41bsuh6",
+  "mv": "2.1",
+  "psv": "1.01",
+  "te": "2022-01-01",
+  "ts": "2021-01-01",
+  "utm": "52N",
+  "region": "Inje"
+ },
+ {
+  "dv": "1.0",
+  "id": "GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL/xqdwbllbedcqjjgpn",
+  "mv": "2.1",
+  "psv": "1.01",
+  "te": "2024-01-01",
+  "ts": "2023-01-01",
+  "utm": "52N",
+  "region": "Inje"
+ },
+ {
+  "dv": "1.1",
+  "id": "GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL/xqxjog0f6l6xu8lwj",
+  "mv": "2.1",
+  "psv": "1.02",
+  "te": "2018-01-01",
+  "ts": "2017-01-01",
+  "utm": "52N",
+  "region": "Inje"
+ },
+ {
+  "dv": "1.1",
+  "id": "GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL/xurp4os2cqcr2m74i",
+  "mv": "2.1",
+  "psv": "1.02",
+  "te": "2026-01-01",
+  "ts": "2025-01-01",
+  "utm": "52N",
+  "region": "Inje"
+ },
+ {
+  "dv": "1.0",
+  "id": "GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL/xxo5vtefascis38zo",
+  "mv": "2.1",
+  "psv": "1.01",
+  "te": "2023-01-01",
+  "ts": "2022-01-01",
+  "utm": "52N",
+  "region": "Inje"
+ }
+]

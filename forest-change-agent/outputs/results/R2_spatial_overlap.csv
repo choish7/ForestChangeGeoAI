@@ -1,0 +1,7 @@
+﻿Comparison,Evaluation samples,Training overlay fragments,Evaluation overlay fragments,Shared overlay fragments,Evaluation samples in shared overlay fragments,Training 2019 map polygons,Evaluation 2019 map polygons,Shared 2019 map polygons,Evaluation samples in shared 2019 map polygons,Training 2025 map polygons,Evaluation 2025 map polygons,Shared 2025 map polygons,Evaluation samples in shared 2025 map polygons,"Hold-out F1 (AE+S2+TERR), all",Hold-out F1 excluding shared fragments,Hold-out F1 excluding samples in any shared fragment or map polygon,Hold-out samples kept (any-ID rule)
+Training blocks vs spatial-block hold-out,1084,2530,573,20,44,2287,513,33,97,2284,526,20,51,0.936,0.937,0.934,984.0
+CV fold 1: other training folds vs fold 1,1057,2006,532,8,15,1804,493,10,27,1814,479,9,16,,,,
+CV fold 2: other training folds vs fold 2,1010,2013,525,8,10,1829,468,10,19,1815,477,8,15,,,,
+CV fold 3: other training folds vs fold 3,958,2030,502,2,9,1854,437,4,11,1847,439,2,9,,,,
+CV fold 4: other training folds vs fold 4,992,2037,505,12,32,1831,468,12,32,1841,456,13,33,,,,
+CV fold 5: other training folds vs fold 5,926,2050,482,2,4,1850,441,4,7,1836,450,2,4,,,,
